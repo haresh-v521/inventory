@@ -40,7 +40,7 @@ class ProductList extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width / 14, top: 5),
-                    child: Image.asset(
+                    child: Image.network(
                       bluImage,
                       height: 89,
                     ),

@@ -71,7 +71,7 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.only(top: 12),
                   child: Text(
-                    "User Name",
+                    "${modal.profile?.user.name}",
                     style: GoogleFonts.marmelad(
                         color: Colors.white,
                         fontSize: 18,
@@ -81,7 +81,7 @@ class _EditProfileState extends State<EditProfile> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8),
                   child: Text(
-                    "user123@gmail.com",
+                    "${modal.profile?.user.email}",
                     style: GoogleFonts.marmelad(
                         color: Colors.white,
                         fontSize: 14,
@@ -99,28 +99,28 @@ class _EditProfileState extends State<EditProfile> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   CustomListTile(
-                    text: "User Name",
+                    text: "${modal.profile?.user.name}",
                     callback: () {},
                     icon: const Icon(
                       Icons.edit,
                     ), color: Colors.black,
                   ),
                   CustomListTile(
-                    text: "user123@gmail.com",
+                    text: "${modal.profile?.user.email}",
                     callback: () {},
                     icon: const Icon(
                       Icons.edit,
                     ), color: Colors.black,
                   ),
                   CustomListTile(
-                    text: "Male",
+                    text: "${modal.profile?.user.gender}",
                     callback: () {},
                     icon: const Icon(
                       Icons.keyboard_arrow_down_rounded,size: 25,
                     ), color: Colors.black,
                   ),
                   CustomListTile(
-                    text: modal.dateController.text,
+                    text: "${modal.profile?.user.birthDate.day}/${modal.profile?.user.birthDate.month}/${modal.profile?.user.birthDate.year}",
                     callback: (){
                       modal.onTap(context);
                     },

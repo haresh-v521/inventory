@@ -90,10 +90,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children:  [
-                     CustomContainer(text: modal.nameController.text),
-                     CustomContainer(text: modal.emailController.text),
-                     CustomContainer(text: modal.dropSelectedValue),
-                     CustomContainer(text: modal.dateController.text),
+                     CustomContainer(text:"${modal.profile?.user.name}"),
+                     CustomContainer(text:"${modal.profile?.user.email}"),
+                     CustomContainer(text:"${modal.profile?.user.gender}"),
+                     CustomContainer(text:"${modal.profile?.user.birthDate.day}/${modal.profile?.user.birthDate.month}/${modal.profile?.user.birthDate.year}"),
                   ],
                 ),
               ),

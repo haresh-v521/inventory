@@ -24,54 +24,34 @@ class AddProducts extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: GestureDetector(
-                  onTap: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text("Choose"),
-                          actions: [
-                            IconButton(
-                              onPressed: modal.imageCapture,
-                              icon: const Icon(Icons.camera_alt),
-                            ),
-                            IconButton(
-                              onPressed: modal.imagePick,
-                              icon: const Icon(Icons.photo),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                    Navigator.of(context).pop();
-                  },
-                  child: (modal.img == null)
-                      ? Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            color: Colors.grey.shade400,
-                          ),
+              GestureDetector(
+                onTap: () {
+                  modal.openDialog(context);
+                },
+                child: (modal.img != null)
+                    ? ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.file(
+                          modal.img!,
                           height: MediaQuery.of(context).size.height / 5,
                           width: MediaQuery.of(context).size.width / 2.5,
-                          child: Icon(
-                            Icons.add_photo_alternate_outlined,
-                            size: 80,
-                            color: Colors.grey.shade900,
-                          ),
-                        )
-                      : ClipRRect(
-                    borderRadius: BorderRadius.circular(20),
-                        child: Image.file(modal.img!,
-                    height: MediaQuery.of(context).size.height / 5,
-                    width: MediaQuery.of(context).size.width / 2.5,
-                    fit: BoxFit.fill,
-                  ),
+                          fit: BoxFit.fill,
+                        ),
+                      )
+                    : Container(
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          color: Colors.grey.shade400,
+                        ),
+                        height: MediaQuery.of(context).size.height / 5,
+                        width: MediaQuery.of(context).size.width / 2.5,
+                        child: Icon(
+                          Icons.add_photo_alternate_outlined,
+                          size: 80,
+                          color: Colors.grey.shade900,
+                        ),
                       ),
-                ),
               ),
               CustomInput(
                 controller: modal.productNameController,
@@ -118,15 +98,16 @@ class AddProducts extends StatelessWidget {
                 color: Colors.grey.shade800,
                 fontColor: Colors.white,
                 onTap: () {
-                  addProducts(
+                  if(modal.key.currentState!.validate()) {
+                    addProducts(
                       modal.productNameController.text,
-                      modal.priceController.text,
-                      modal.sellingItemController.text,
+                      int.parse(modal.priceController.text),
+                      int.parse(modal.sellingItemController.text,),
                       modal.desController.text,
                       modal.img!,
-                  );
-                  modal.cancelact();
-                  Navigator.of(context).pop();
+                    );
+                  }
+                  // Navigator.of(context).pop();
                 },
               ),
               CustomButton(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:login_figma/core/modal/list_product_modal.dart';
 import 'dart:io';
 import '../modal/user_profile_modal.dart';
 import '../services/http_service.dart';
@@ -23,6 +24,7 @@ class DataClass extends ChangeNotifier {
   TextEditingController desController = TextEditingController();
   dynamic dropSelectedValue = "";
   UserProfile? profile ;
+  Listing? list ;
   ImagePicker picker = ImagePicker();
   File? img ;
 
@@ -49,7 +51,7 @@ class DataClass extends ChangeNotifier {
       lastDate: DateTime(2100),
     );
     if (selected != null) {
-      String formattedDate = DateFormat('dd/MM/yyyy').format(selected);
+      String formattedDate = DateFormat('dd MMMM,yyyy').format(selected);
       dateController.text = formattedDate;
       notifyListeners();
     }
@@ -68,6 +70,10 @@ class DataClass extends ChangeNotifier {
     profile = await getUser();
     notifyListeners();
   }
+  listResponse()async {
+    list = await getProduct();
+    notifyListeners();
+  }
   cancelact(){
     productNameController.clear();
     priceController.clear();
@@ -83,5 +89,25 @@ class DataClass extends ChangeNotifier {
     XFile? image = await picker.pickImage(source: ImageSource.camera);
     img = File(image!.path);
     notifyListeners();
+  }
+  openDialog(BuildContext context){
+     showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Choose"),
+          actions: [
+            IconButton(
+              onPressed: imageCapture,
+              icon: const Icon(Icons.camera_alt),
+            ),
+            IconButton(
+              onPressed: imagePick,
+              icon: const Icon(Icons.photo),
+            ),
+          ],
+        );
+      },
+    );
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_figma/core/provider/providers.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/custom_product_list.dart';
@@ -13,8 +15,18 @@ class ProductListing extends StatefulWidget {
 }
 
 class _ProductListingState extends State<ProductListing> {
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      Provider.of<DataClass>(context, listen: false).listResponse();
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
+    final modal = Provider.of<DataClass>(context);
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
       extendBodyBehindAppBar: true,
@@ -71,51 +83,41 @@ class _ProductListingState extends State<ProductListing> {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.only(bottom: 10),
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height / 7,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade800,
-                borderRadius: const BorderRadius.only(
-                  bottomRight: Radius.circular(30),
-                  bottomLeft: Radius.circular(
-                    30,
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 7,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade800,
+                  borderRadius: const BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(
+                      30,
+                    ),
                   ),
                 ),
               ),
             ),
           ),
-          ProductList(
-            onTap: () {
-              Navigator.of(context).pushNamed('detail');
-            },
-            image: AppString.playImg,
-            bluImage: AppString.bluImg,
-            price: AppString.price,
-            bluText: AppString.blue,
-          ),
-          ProductList(
-            onTap: () {},
-            image: AppString.playImg,
-            bluImage: AppString.bluImg,
-            price: AppString.price,
-            bluText: AppString.blue,
-          ),
-          ProductList(
-            image: AppString.playImg,
-            bluImage: AppString.bluImg,
-            price: AppString.price,
-            bluText: AppString.blue,
-            onTap: () {},
-          ),
-          ProductList(
-            image: AppString.playImg,
-            bluImage: AppString.bluImg,
-            price: AppString.price,
-            bluText: AppString.blue,
-            onTap: () {},
+          Expanded(
+            flex: 9,
+            child: ListView.builder(
+              itemCount: modal.list?.data.data.length,
+              itemBuilder: (context, i) {
+                return ProductList(
+                  onTap: () {
+                    Navigator.of(context).pushNamed('detail');
+                  },
+                  image: AppString.playImg,
+                  bluImage: "${modal.list?.data.data[i].image}",
+                  price: AppString.price,
+                  bluText: AppString.blue,
+                );
+              },
+            ),
           ),
         ],
       ),

@@ -1,11 +1,11 @@
 import 'dart:convert';
 
-AddProduct addProductFromJson(String str) => AddProduct.fromJson(json.decode(str));
+Add addFromJson(String str) => Add.fromJson(json.decode(str));
 
-String addProductToJson(AddProduct data) => json.encode(data.toJson());
+String addToJson(Add data) => json.encode(data.toJson());
 
-class AddProduct {
-  AddProduct({
+class Add {
+  Add({
     required this.status,
     required this.message,
     required this.data,
@@ -15,7 +15,7 @@ class AddProduct {
   String message;
   Data data;
 
-  factory AddProduct.fromJson(Map<String, dynamic> json) => AddProduct(
+  factory Add.fromJson(Map<String, dynamic> json) => Add(
     status: json["status"],
     message: json["message"],
     data: Data.fromJson(json["data"]),

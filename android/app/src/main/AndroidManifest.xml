@@ -2,7 +2,7 @@
     package="com.example.login_figma">
    <application
         android:label="login_figma"
-        android:name="login_figma"
+        android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

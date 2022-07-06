@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:login_figma/core/provider/providers.dart';
 import 'package:login_figma/ui/views/homepage.dart';
@@ -9,11 +10,13 @@ import 'package:login_figma/ui/views/screens/product/product_detail.dart';
 import 'package:login_figma/ui/views/screens/profile/edit_profile.dart';
 import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
+import 'core/services/http_service.dart';
 
 void main() {
   runApp(
-    const Authenticate(),
+     const Authenticate(),
   );
+  HttpOverrides.global = MyHttpOverrides();
 }
 
 class Authenticate extends StatelessWidget {
@@ -29,6 +32,7 @@ class Authenticate extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=>DataClass(),child: const ProfilePage(),),
         ChangeNotifierProvider(create: (context)=>DataClass(),child: const AddProducts(),),
         ChangeNotifierProvider(create: (context)=>DataClass(),child: const ProductDetail(),),
+        ChangeNotifierProvider(create: (context)=>DataClass(),child: const ProductListing(),),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
