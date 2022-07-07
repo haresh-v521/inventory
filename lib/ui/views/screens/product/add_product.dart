@@ -98,7 +98,7 @@ class AddProducts extends StatelessWidget {
                 color: Colors.grey.shade800,
                 fontColor: Colors.white,
                 onTap: () {
-                  if(modal.key.currentState!.validate()) {
+                  // if(modal.key.currentState!.validate()) {
                     addProducts(
                       modal.productNameController.text,
                       int.parse(modal.priceController.text),
@@ -106,8 +106,8 @@ class AddProducts extends StatelessWidget {
                       modal.desController.text,
                       modal.img!,
                     );
-                  }
-                  // Navigator.of(context).pop();
+                  // }
+                  Navigator.of(context).pushNamed("listing");
                 },
               ),
               CustomButton(

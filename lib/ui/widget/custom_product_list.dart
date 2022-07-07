@@ -18,7 +18,7 @@ class ProductList extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          margin: const EdgeInsets.only(top: 20),
+          margin: const EdgeInsets.only(top: 10),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(15),
             color: Colors.white,
@@ -40,7 +40,7 @@ class ProductList extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(
                         left: MediaQuery.of(context).size.width / 14, top: 5),
-                    child: Image.network(
+                    child: Image.asset(
                       bluImage,
                       height: 89,
                     ),

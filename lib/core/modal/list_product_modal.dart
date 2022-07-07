@@ -36,7 +36,6 @@ class Data {
     required this.from,
     required this.lastPage,
     required this.lastPageUrl,
-    required this.links,
     required this.nextPageUrl,
     required this.path,
     required this.perPage,
@@ -51,7 +50,6 @@ class Data {
   int from;
   int lastPage;
   String lastPageUrl;
-  List<Link> links;
   String nextPageUrl;
   String path;
   int perPage;
@@ -66,7 +64,6 @@ class Data {
     from: json["from"],
     lastPage: json["last_page"],
     lastPageUrl: json["last_page_url"],
-    links: List<Link>.from(json["links"].map((x) => Link.fromJson(x))),
     nextPageUrl: json["next_page_url"],
     path: json["path"],
     perPage: json["per_page"],
@@ -82,7 +79,6 @@ class Data {
     "from": from,
     "last_page": lastPage,
     "last_page_url": lastPageUrl,
-    "links": List<dynamic>.from(links.map((x) => x.toJson())),
     "next_page_url": nextPageUrl,
     "path": path,
     "per_page": perPage,
@@ -137,29 +133,5 @@ class Datum {
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
     "img": img,
-  };
-}
-
-class Link {
-  Link({
-    required this.url,
-    required this.label,
-    required this.active,
-  });
-
-  String url;
-  String label;
-  bool active;
-
-  factory Link.fromJson(Map<String, dynamic> json) => Link(
-    url: json["url"] == null ? null : json["url"],
-    label: json["label"],
-    active: json["active"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "url": url == null ? null : url,
-    "label": label,
-    "active": active,
   };
 }

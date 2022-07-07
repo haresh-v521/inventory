@@ -137,6 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                               modal.loginPasswordController.text,
                             );
                             Navigator.of(context).pushReplacementNamed('listing');
+                          }else {
+                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Login Failed")));
                           }
                         },
                       ),

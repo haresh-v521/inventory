@@ -15,7 +15,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -26,7 +25,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-
     final modal = Provider.of<DataClass>(context);
 
     return Scaffold(
@@ -37,78 +35,85 @@ class _ProfilePageState extends State<ProfilePage> {
         centerTitle: true,
         backgroundColor: Colors.grey.shade800,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              height: MediaQuery.of(context).size.height / 2.3,
-              width: MediaQuery.of(context).size.width,
-              decoration: BoxDecoration(
-                color: Colors.grey.shade800,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(60),
-                  bottomRight: Radius.circular(60),
-                ),
-              ),
+      body: (modal.isLoading)
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: CircleAvatar(
-                      radius: 50,
-                      backgroundImage: AssetImage("assets/images/img_1.png"),
+                  Container(
+                    height: MediaQuery.of(context).size.height / 2.3,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade800,
+                      borderRadius: const BorderRadius.only(
+                        bottomLeft: Radius.circular(60),
+                        bottomRight: Radius.circular(60),
+                      ),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: CircleAvatar(
+                            radius: 50,
+                            backgroundImage:
+                                AssetImage("assets/images/img_1.png"),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 12),
+                          child: Text(
+                            "${modal.profile?.user.name}",
+                            style: GoogleFonts.marmelad(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8),
+                          child: Text(
+                            "${modal.profile?.user.email}",
+                            style: GoogleFonts.marmelad(
+                                color: Colors.white,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w400),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Text(
-                    "${modal.profile?.user.name}",
-                      style: GoogleFonts.marmelad(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w400),
+                    padding: const EdgeInsets.only(top: 40),
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          CustomContainer(text: "${modal.profile?.user.name}"),
+                          CustomContainer(text: "${modal.profile?.user.email}"),
+                          CustomContainer(text: "${modal.profile?.user.gender}"),
+                          CustomContainer(text:
+                                "${modal.profile?.user.birthDate.day}/${modal.profile?.user.birthDate.month}/${modal.profile?.user.birthDate.year}",
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Text(
-                      "${modal.profile?.user.email}",
-                      style: GoogleFonts.marmelad(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontWeight: FontWeight.w400),
-                    ),
+                  CustomButton(
+                    text: AppString.edit,
+                    color: Colors.grey.shade800,
+                    fontColor: Colors.white,
+                    onTap: () {
+                      Navigator.of(context).pushNamed('edit');
+                    },
                   ),
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 40),
-              child: Container(
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children:  [
-                     CustomContainer(text:"${modal.profile?.user.name}"),
-                     CustomContainer(text:"${modal.profile?.user.email}"),
-                     CustomContainer(text:"${modal.profile?.user.gender}"),
-                     CustomContainer(text:"${modal.profile?.user.birthDate.day}/${modal.profile?.user.birthDate.month}/${modal.profile?.user.birthDate.year}"),
-                  ],
-                ),
-              ),
-            ),
-            CustomButton(
-              text: AppString.edit,
-              color: Colors.grey.shade800,
-              fontColor: Colors.white,
-              onTap: () {
-                Navigator.of(context).pushNamed('edit');
-              },
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

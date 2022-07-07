@@ -22,7 +22,10 @@ class DataClass extends ChangeNotifier {
   TextEditingController priceController = TextEditingController();
   TextEditingController sellingItemController = TextEditingController();
   TextEditingController desController = TextEditingController();
+  TextEditingController updateEmail = TextEditingController();
+  TextEditingController updateName = TextEditingController();
   dynamic dropSelectedValue = "";
+  bool isLoading = false;
   UserProfile? profile ;
   Listing? list ;
   ImagePicker picker = ImagePicker();
@@ -67,7 +70,9 @@ class DataClass extends ChangeNotifier {
     notifyListeners();
   }
   userResponse()async {
+    isLoading = true;
     profile = await getUser();
+    isLoading = false ;
     notifyListeners();
   }
   listResponse()async {
