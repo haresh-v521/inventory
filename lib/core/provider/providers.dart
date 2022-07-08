@@ -11,6 +11,7 @@ class DataClass extends ChangeNotifier {
   GlobalKey<FormState> loginKey = GlobalKey<FormState>();
   DateTime initialDate = DateTime.now();
   double rating = 0;
+
   TextEditingController dateController = TextEditingController();
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
@@ -22,14 +23,17 @@ class DataClass extends ChangeNotifier {
   TextEditingController priceController = TextEditingController();
   TextEditingController sellingItemController = TextEditingController();
   TextEditingController desController = TextEditingController();
-  TextEditingController updateEmail = TextEditingController();
-  TextEditingController updateName = TextEditingController();
+
+String name = "";
+  String email = "";
   dynamic dropSelectedValue = "";
-  bool isLoading = false;
+  bool isLoading = true;
   UserProfile? profile ;
   Listing? list ;
   ImagePicker picker = ImagePicker();
   File? img ;
+  int page = 21 ;
+
 
   List<DropdownMenuItem<String>> dropValues = <DropdownMenuItem<String>>[
     const DropdownMenuItem(
@@ -75,24 +79,27 @@ class DataClass extends ChangeNotifier {
     isLoading = false ;
     notifyListeners();
   }
-  listResponse()async {
-    list = await getProduct();
+  listResponse(int page)async {
+    isLoading = true;
+    list = await getProduct(page);
+    isLoading = false;
     notifyListeners();
   }
+
   cancelact(){
     productNameController.clear();
     priceController.clear();
     sellingItemController.clear();
     desController.clear();
   }
-  imagePick() async {
-    XFile? image = await picker.pickImage(source: ImageSource.gallery);
-    img = File(image!.path);
-    notifyListeners();
-  }
-  imageCapture() async {
-    XFile? image = await picker.pickImage(source: ImageSource.camera);
-    img = File(image!.path);
+  imagePick(ImageSource source,BuildContext context) async {
+    XFile? image = await picker.pickImage(source: source);
+    if(image != null){
+      img = File(image.path);
+      Navigator.of(context).pop();
+    }else {
+      Navigator.of(context).pop();
+    }
     notifyListeners();
   }
   openDialog(BuildContext context){
@@ -103,11 +110,15 @@ class DataClass extends ChangeNotifier {
           title: const Text("Choose"),
           actions: [
             IconButton(
-              onPressed: imageCapture,
+              onPressed: (){
+                imagePick(ImageSource.camera,context);
+              },
               icon: const Icon(Icons.camera_alt),
             ),
             IconButton(
-              onPressed: imagePick,
+              onPressed: (){
+                imagePick(ImageSource.gallery,context);
+              },
               icon: const Icon(Icons.photo),
             ),
           ],
@@ -115,4 +126,14 @@ class DataClass extends ChangeNotifier {
       },
     );
   }
+  // void pagination(){
+  //   if ((scrollController.position.pixels ==
+  //       scrollController.position.maxScrollExtent)) {
+  //     if(page >= list!.data.lastPage){
+  //       listResponse(page++);
+  //       notifyListeners();
+  //     }
+  //   }
+  //   notifyListeners();
+  // }
 }

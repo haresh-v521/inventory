@@ -123,11 +123,13 @@ class _EditProfileState extends State<EditProfile> {
                         return null;
                       },
                       initialValue: "${modal.profile?.user.email}",
+                      icon: const Icon(Icons.edit),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(right: 18,left: 18,top: 15,bottom: 5),
+                      padding: const EdgeInsets.only(
+                          right: 18, left: 18, top: 15, bottom: 5),
                       child: DropdownButtonFormField(
-                        hint:  Text("${modal.profile?.user.gender}"),
+                        hint: Text("${modal.profile?.user.gender}"),
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -136,7 +138,8 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     CustomListTile(
-                      text: "${modal.profile?.user.birthDate.day}/${modal.profile?.user.birthDate.month}/${modal.profile?.user.birthDate.year}",
+                      text:
+                          "${modal.profile?.user.birthDate.day} /${modal.profile?.user.birthDate.month} /${modal.profile?.user.birthDate.year}",
                       callback: () {
                         modal.onTap(context);
                       },
@@ -154,7 +157,7 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.grey.shade800,
               fontColor: Colors.white,
               onTap: () {
-                // profileUpdate(modal.updateName.text, modal.updateEmail.text);
+                profileUpdate(modal.nameController.text, modal.emailController.text);
               },
             ),
           ],

@@ -25,7 +25,7 @@ class AppString{
   static const String product = "Product List" ;
   static const String detail = "Product Detail" ;
   static const String highlight = "Highlights" ;
-  static const String color = "Colors" ;
+  static const String color = "Colors : " ;
   static const String description = "Description" ;
   static const String rating = "Ratings" ;
   static const String dob = "DOB" ;

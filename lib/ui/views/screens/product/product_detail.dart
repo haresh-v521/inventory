@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_figma/ui/widget/custom_color_pallat.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/provider/providers.dart';
 import '../../../../utils/constant/app_string.dart';
@@ -17,6 +18,7 @@ class _ProductDetailState extends State<ProductDetail> {
   @override
   Widget build(BuildContext context) {
     final modal = Provider.of<DataClass>(context);
+    dynamic res = ModalRoute.of(context)!.settings.arguments;
 
     return Scaffold(
       backgroundColor: Colors.grey.shade200,
@@ -52,21 +54,27 @@ class _ProductDetailState extends State<ProductDetail> {
               ),
             ),
           ),
-          Align(
-            alignment: Alignment.center,
-            child: Image.asset(
-              AppString.bluetooth,
-              height: 140,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 15),
+            child: Align(
+              alignment: Alignment.center,
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(15),
+                child: Image.network(
+                  "${res[2]}",
+                  height: 140,
+                ),
+              ),
             ),
           ),
           CustomText(
             color: Colors.grey.shade800,
-            text: AppString.blue,
+            text: "${res[0]}",
             size: 18,
           ),
           CustomText(
             color: Colors.grey.shade500,
-            text: AppString.price,
+            text: "Price : ${res[1]}\$",
             size: 16,
           ),
           CustomText(
@@ -86,17 +94,17 @@ class _ProductDetailState extends State<ProductDetail> {
                 color: Colors.grey.shade800,
                 size: 18,
               ),
-              const CircleAvatar(
-                radius: 10,
+              const ColorPallet(
+                color: Colors.red,
               ),
-              const CircleAvatar(
-                radius: 10,
+              const ColorPallet(
+                color: Colors.indigo,
               ),
-              const CircleAvatar(
-                radius: 10,
+              const ColorPallet(
+                color: Colors.grey,
               ),
-              const CircleAvatar(
-                radius: 10,
+              const ColorPallet(
+                color: Colors.black,
               ),
             ],
           ),

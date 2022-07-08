@@ -27,24 +27,18 @@ Future registerPostData(
     "password_confirmation": passwordConfirm,
   };
 
-  Response res = await dio.post(
-    "${ApiUrl.baseUrl}register",
-    data: FormData.fromMap(parameters),
-    options: Options(
-      headers: {
-        HttpHeaders.authorizationHeader: "Bearer token"
-      }
-    )
-  );
+  Response res = await dio.post("${ApiUrl.baseUrl}register",
+      data: FormData.fromMap(parameters),
+      options:
+          Options(headers: {HttpHeaders.authorizationHeader: "Bearer token"}));
   if (res.statusCode == 200) {
     final responseJson = res.data;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString('token', responseJson['token']);
-   return PostData.fromJson(res.data);
-  }else{
+    return PostData.fromJson(res.data);
+  } else {
     throw Exception("Can't Register");
   }
-
 }
 
 Future loginPostData(String email, String password) async {
@@ -76,7 +70,8 @@ Future getUser() async {
     options: Options(
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
-        HttpHeaders.contentTypeHeader: "application/json"},
+        HttpHeaders.contentTypeHeader: "application/json"
+      },
     ),
   );
   if (res.statusCode == 200) {
@@ -86,12 +81,12 @@ Future getUser() async {
   }
 }
 
-Future getProduct() async {
+Future getProduct(int page) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
 
   Response res = await dio.get(
-    "${ApiUrl.baseUrl}products?page=1",
+    "${ApiUrl.baseUrl}products?page=$page",
     options: Options(
       headers: {
         "Authorization": "Bearer $token",
@@ -118,20 +113,18 @@ Future addProducts(
     "mrp": mrp,
     "selling": selling,
     "description": description,
-    "image": await MultipartFile.fromFile(image.path,filename: fileName,),
+    "image": await MultipartFile.fromFile(
+      image.path,
+      filename: fileName,
+    ),
   };
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
-  Response res =  await dio.post(
-    "${ApiUrl.baseUrl}products",
-    data: FormData.fromMap(parameters),
-    options: Options(
-      followRedirects: true,
-      headers: {
-        "Authorization":"Bearer $token",
-      }
-    )
-  );
+  Response res = await dio.post("${ApiUrl.baseUrl}products",
+      data: FormData.fromMap(parameters),
+      options: Options(followRedirects: true, headers: {
+        "Authorization": "Bearer $token",
+      }));
   if (res.statusCode == 200) {
     return Add.fromJson(res.data);
   } else if (res.statusCode == 302) {
@@ -139,26 +132,21 @@ Future addProducts(
   } else {
     throw Exception('failed to create product');
   }
- }
+}
 
- Future profileUpdate(String name, String email) async {
+Future profileUpdate(String name, String email) async {
   var parameters = {
-    "name" : name,
-    "email" : email,
+    "name": name,
+    "email": email,
   };
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
 
-  Response res =  await dio.post(
-    "${ApiUrl.baseUrl}profileUpdate/27",
-    data: FormData.fromMap(parameters),
-    options: Options(
-      followRedirects: true,
-      headers: {
-        "Authorization":"Bearer $token",
-      }
-    )
-  );
+  Response res = await dio.put("${ApiUrl.baseUrl}profileUpdate/27",
+      data: FormData.fromMap(parameters),
+      options: Options(followRedirects: true, headers: {
+        "Authorization": "Bearer $token",
+      }));
   if (res.statusCode == 200) {
     return Add.fromJson(res.data);
   } else if (res.statusCode == 302) {
@@ -166,7 +154,7 @@ Future addProducts(
   } else {
     throw Exception('failed to create product');
   }
- }
+}
 
 class MyHttpOverrides extends HttpOverrides {
   @override

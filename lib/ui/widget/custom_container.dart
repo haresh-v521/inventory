@@ -15,8 +15,7 @@ class CustomContainer extends StatelessWidget {
       child: Container(
         alignment: Alignment.center,
         width: MediaQuery.of(context).size.width,
-        padding:
-            const EdgeInsets.only(left: 60, right: 60, top: 20, bottom: 20),
+        padding: const EdgeInsets.only(left: 60, right: 60, top: 20, bottom: 20),
         decoration: BoxDecoration(
           border: Border.all(
             color: Colors.black,

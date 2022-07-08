@@ -11,6 +11,7 @@ class CustomInput extends StatelessWidget {
   final VoidCallback? onTap;
   final String? Function(String?)? validator;
   final String? Function(String?)? onChanged;
+  final String? Function(String?)? onSaved;
   final bool value;
 
   const CustomInput(
@@ -25,6 +26,7 @@ class CustomInput extends StatelessWidget {
         required this.validator,
         this.initialValue,
         this.onChanged,
+        this.onSaved,
       })
       : super(key: key);
 
@@ -40,6 +42,7 @@ class CustomInput extends StatelessWidget {
         controller: controller,
         obscureText: val,
         onTap: onTap,
+        onSaved: onSaved,
         onChanged:onChanged,
         readOnly: value,
         decoration: InputDecoration(

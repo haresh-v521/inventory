@@ -14,18 +14,29 @@ class ProductListing extends StatefulWidget {
 }
 
 class _ProductListingState extends State<ProductListing> {
+  int page = 21;
+  ScrollController scrollController = ScrollController();
+
+  late DataClass modal ;
+
+  @override
+  void didChangeDependencies() {
+   modal = Provider.of<DataClass>(context);
+    super.didChangeDependencies();
+  }
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      Provider.of<DataClass>(context, listen: false).listResponse();
+      modal.listResponse(page);
+      scrollController.addListener(() {
+      print("....");
+      });
     });
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
-    final modal = Provider.of<DataClass>(context);
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.grey.shade200,
@@ -83,40 +94,47 @@ class _ProductListingState extends State<ProductListing> {
         ),
         body: Column(
           children: [
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.only(bottom: 10),
-                child: Container(
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height / 10.5,
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade800,
-                    borderRadius: const BorderRadius.only(
-                      bottomRight: Radius.circular(30),
-                      bottomLeft: Radius.circular(
-                        30,
-                      ),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: Container(
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height / 10.5,
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade800,
+                  borderRadius: const BorderRadius.only(
+                    bottomRight: Radius.circular(30),
+                    bottomLeft: Radius.circular(
+                      30,
                     ),
                   ),
                 ),
               ),
             ),
             Expanded(
-              flex: 10,
-              child:ListView.builder(
-                itemCount: modal.list?.data.data.length,
-                itemBuilder: (context, i) {
-                  return ProductList(
-                    onTap: () {
-                      Navigator.of(context).pushNamed('detail');
-                    },
-                    image: AppString.playImg,
-                    bluImage: AppString.bluImg,
-                    price:  "${modal.list?.data.data[i].mrp}",
-                    bluText: "${modal.list?.data.data[i].name}",
-                  );
-                },
-              ),
+              child: (modal.isLoading)
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : ListView.builder(
+                      controller: scrollController,
+                      itemCount: modal.list!.data.data.length,
+                      itemBuilder: (context, i) {
+                        return ProductList(
+                          onTap: () {
+                            Navigator.of(context)
+                                .pushNamed('detail', arguments: [
+                              modal.list?.data.data[i].name,
+                              modal.list?.data.data[i].mrp,
+                              modal.list?.data.data[i].img,
+                            ]);
+                          },
+                          image: AppString.playImg,
+                          bluImage: "${modal.list?.data.data[i].img}",
+                          price: "${modal.list?.data.data[i].mrp}",
+                          bluText: "${modal.list?.data.data[i].name}",
+                        );
+                      },
+                    ),
             ),
           ],
         ),

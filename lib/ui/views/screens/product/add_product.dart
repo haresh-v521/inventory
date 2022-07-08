@@ -66,7 +66,7 @@ class AddProducts extends StatelessWidget {
               CustomInput(
                 controller: modal.priceController,
                 text: "Product Price",
-                type: TextInputType.name,
+                type: TextInputType.number,
                 val: false,
                 value: false,
                 validator: (val) {
@@ -76,7 +76,7 @@ class AddProducts extends StatelessWidget {
               CustomInput(
                 controller: modal.sellingItemController,
                 text: "Selling Item",
-                type: TextInputType.name,
+                type: TextInputType.number,
                 val: false,
                 value: false,
                 validator: (val) {
@@ -98,7 +98,6 @@ class AddProducts extends StatelessWidget {
                 color: Colors.grey.shade800,
                 fontColor: Colors.white,
                 onTap: () {
-                  // if(modal.key.currentState!.validate()) {
                     addProducts(
                       modal.productNameController.text,
                       int.parse(modal.priceController.text),
@@ -106,7 +105,6 @@ class AddProducts extends StatelessWidget {
                       modal.desController.text,
                       modal.img!,
                     );
-                  // }
                   Navigator.of(context).pushNamed("listing");
                 },
               ),
