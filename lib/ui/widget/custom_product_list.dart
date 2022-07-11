@@ -65,6 +65,7 @@ class ProductList extends StatelessWidget {
                             color: Colors.grey.shade800,
                             fontWeight: FontWeight.w400,
                             fontSize: 18,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),

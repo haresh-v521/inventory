@@ -16,12 +16,11 @@ class ProductListing extends StatefulWidget {
 class _ProductListingState extends State<ProductListing> {
   int page = 21;
   ScrollController scrollController = ScrollController();
-
-  late DataClass modal ;
+  late DataClass modal;
 
   @override
   void didChangeDependencies() {
-   modal = Provider.of<DataClass>(context);
+    modal = Provider.of<DataClass>(context);
     super.didChangeDependencies();
   }
 
@@ -30,11 +29,17 @@ class _ProductListingState extends State<ProductListing> {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       modal.listResponse(page);
       scrollController.addListener(() {
-      print("....");
+        if (scrollController.position.pixels ==
+            scrollController.position.maxScrollExtent) {
+          if (page <= modal.list!.data.lastPage) {
+            modal.listResponse(page += 1);
+          }
+        }
       });
     });
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -103,9 +108,7 @@ class _ProductListingState extends State<ProductListing> {
                   color: Colors.grey.shade800,
                   borderRadius: const BorderRadius.only(
                     bottomRight: Radius.circular(30),
-                    bottomLeft: Radius.circular(
-                      30,
-                    ),
+                    bottomLeft: Radius.circular(30),
                   ),
                 ),
               ),
@@ -117,21 +120,21 @@ class _ProductListingState extends State<ProductListing> {
                     )
                   : ListView.builder(
                       controller: scrollController,
-                      itemCount: modal.list!.data.data.length,
+                      itemCount: modal.items.length,
                       itemBuilder: (context, i) {
                         return ProductList(
                           onTap: () {
                             Navigator.of(context)
                                 .pushNamed('detail', arguments: [
-                              modal.list?.data.data[i].name,
-                              modal.list?.data.data[i].mrp,
-                              modal.list?.data.data[i].img,
+                              "${modal.items[i].img}",
+                              "${modal.items[i].mrp}",
+                              modal.items[i].name,
                             ]);
                           },
                           image: AppString.playImg,
-                          bluImage: "${modal.list?.data.data[i].img}",
-                          price: "${modal.list?.data.data[i].mrp}",
-                          bluText: "${modal.list?.data.data[i].name}",
+                          bluImage: "${modal.items[i].img}",
+                          price: "Price : ${modal.items[i].mrp}",
+                          bluText: modal.items[i].name.toUpperCase(),
                         );
                       },
                     ),

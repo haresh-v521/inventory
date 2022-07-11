@@ -61,20 +61,22 @@ class _ProductDetailState extends State<ProductDetail> {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15),
                 child: Image.network(
-                  "${res[2]}",
+                  "${res[0]}",
                   height: 140,
+                  width: 140,
+                  fit: BoxFit.cover,
                 ),
               ),
             ),
           ),
           CustomText(
             color: Colors.grey.shade800,
-            text: "${res[0]}",
+            text: res[2].toString().toUpperCase(),
             size: 18,
           ),
           CustomText(
             color: Colors.grey.shade500,
-            text: "Price : ${res[1]}\$",
+            text: "Price : ${res[1]} \$",
             size: 16,
           ),
           CustomText(

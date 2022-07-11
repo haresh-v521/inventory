@@ -116,7 +116,7 @@ class _EditProfileState extends State<EditProfile> {
                       icon: const Icon(Icons.edit),
                     ),
                     CustomInput(
-                      type: TextInputType.name,
+                      type: TextInputType.emailAddress,
                       val: false,
                       value: false,
                       validator: (val) {
@@ -157,7 +157,7 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.grey.shade800,
               fontColor: Colors.white,
               onTap: () {
-                profileUpdate(modal.nameController.text, modal.emailController.text);
+                // profileUpdate(name, email);
               },
             ),
           ],

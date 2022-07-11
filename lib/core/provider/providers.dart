@@ -33,6 +33,7 @@ String name = "";
   ImagePicker picker = ImagePicker();
   File? img ;
   int page = 21 ;
+  List<Datum> items = [];
 
 
   List<DropdownMenuItem<String>> dropValues = <DropdownMenuItem<String>>[
@@ -82,6 +83,7 @@ String name = "";
   listResponse(int page)async {
     isLoading = true;
     list = await getProduct(page);
+    items.addAll(list!.data.data);
     isLoading = false;
     notifyListeners();
   }

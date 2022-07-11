@@ -101,26 +101,44 @@ Future getProduct(int page) async {
 }
 
 Future addProducts(
-  String name,
-  int mrp,
-  int selling,
-  String description,
-  File image,
-) async {
+    String name, int mrp, int selling, String description, File image) async {
   String fileName = image.path.split('/').last;
   var parameters = {
     "name": name,
     "mrp": mrp,
     "selling": selling,
     "description": description,
-    "image": await MultipartFile.fromFile(
-      image.path,
-      filename: fileName,
-    ),
+    "image": await MultipartFile.fromFile(image.path, filename: fileName),
   };
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
   Response res = await dio.post("${ApiUrl.baseUrl}products",
+      data: FormData.fromMap(parameters),
+      options: Options(followRedirects: true, headers: {
+        "Authorization": "Bearer $token",
+      }));
+  if (res.statusCode == 200) {
+    return Add.fromJson(res.data);
+  } else if (res.statusCode == 302) {
+    throw Exception('SomeThing went Wrong');
+  } else {
+    throw Exception('failed to create product');
+  }
+}
+
+Future productUpdate(String name, String mrp, String selling,
+    String description, File image) async {
+  String fileName = image.path.split('/').last;
+  var parameters = {
+    "name": name,
+    "mrp": mrp,
+    "selling": selling,
+    "description": description,
+    "image": await MultipartFile.fromFile(image.path, filename: fileName),
+  };
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('token');
+  Response res = await dio.put("${ApiUrl.baseUrl}products",
       data: FormData.fromMap(parameters),
       options: Options(followRedirects: true, headers: {
         "Authorization": "Bearer $token",
@@ -142,11 +160,16 @@ Future profileUpdate(String name, String email) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
 
-  Response res = await dio.put("${ApiUrl.baseUrl}profileUpdate/27",
-      data: FormData.fromMap(parameters),
-      options: Options(followRedirects: true, headers: {
+  Response res = await dio.post(
+    "${ApiUrl.baseUrl}profileUpdate/27",
+    data: FormData.fromMap(parameters),
+    options: Options(
+      headers: {
         "Authorization": "Bearer $token",
-      }));
+      },
+      method: "POST",
+    ),
+  );
   if (res.statusCode == 200) {
     return Add.fromJson(res.data);
   } else if (res.statusCode == 302) {
