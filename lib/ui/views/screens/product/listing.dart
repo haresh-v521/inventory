@@ -33,11 +33,19 @@ class _ProductListingState extends State<ProductListing> {
             scrollController.position.maxScrollExtent) {
           if (page <= modal.list!.data.lastPage) {
             modal.listResponse(page += 1);
+          } else {
+            scrollController.dispose();
           }
         }
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -120,19 +128,36 @@ class _ProductListingState extends State<ProductListing> {
                     )
                   : ListView.builder(
                       controller: scrollController,
+                      physics: const BouncingScrollPhysics(),
                       itemCount: modal.items.length,
                       itemBuilder: (context, i) {
                         return ProductList(
                           onTap: () {
                             Navigator.of(context)
                                 .pushNamed('detail', arguments: [
-                              "${modal.items[i].img}",
+                              (modal.items[i].img == null)
+                                  ? AppString.noImage
+                                  : "${modal.items[i].img}",
                               "${modal.items[i].mrp}",
                               modal.items[i].name,
+                              modal.items[i].id,
+                              modal.items[i].description,
                             ]);
                           },
                           image: AppString.playImg,
-                          bluImage: "${modal.items[i].img}",
+                          onPressed: () {
+                            modal.delete(modal.items[i].id);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                backgroundColor: Colors.red,
+                                behavior: SnackBarBehavior.floating,
+                                content: Text("Product Deleted Successfully"),
+                              ),
+                            );
+                          },
+                          bluImage: (modal.items[i].img == null)
+                              ? AppString.noImage
+                              : "${modal.items[i].img}",
                           price: "Price : ${modal.items[i].mrp}",
                           bluText: modal.items[i].name.toUpperCase(),
                         );

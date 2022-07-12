@@ -98,14 +98,17 @@ class AddProducts extends StatelessWidget {
                 color: Colors.grey.shade800,
                 fontColor: Colors.white,
                 onTap: () {
-                    addProducts(
-                      modal.productNameController.text,
-                      int.parse(modal.priceController.text),
-                      int.parse(modal.sellingItemController.text,),
-                      modal.desController.text,
-                      modal.img!,
-                    );
+                  addProducts(
+                    modal.productNameController.text,
+                    int.parse(modal.priceController.text),
+                    int.parse(
+                      modal.sellingItemController.text,
+                    ),
+                    modal.desController.text,
+                    modal.img!,
+                  );
                   Navigator.of(context).pushNamed("listing");
+                  modal.cancelact();
                 },
               ),
               CustomButton(

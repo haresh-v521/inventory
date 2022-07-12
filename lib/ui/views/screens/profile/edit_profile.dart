@@ -16,6 +16,23 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  late DataClass modal;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    modal = Provider.of<DataClass>(context);
+    nameController.text = modal.profile!.user.name;
+    emailController.text = modal.profile!.user.email;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     final modal = Provider.of<DataClass>(context);
@@ -106,23 +123,23 @@ class _EditProfileState extends State<EditProfile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomInput(
+                      controller: nameController,
                       type: TextInputType.name,
                       val: false,
                       value: false,
                       validator: (val) {
                         return null;
                       },
-                      initialValue: "${modal.profile?.user.name}",
                       icon: const Icon(Icons.edit),
                     ),
                     CustomInput(
+                      controller: emailController,
                       type: TextInputType.emailAddress,
                       val: false,
                       value: false,
                       validator: (val) {
                         return null;
                       },
-                      initialValue: "${modal.profile?.user.email}",
                       icon: const Icon(Icons.edit),
                     ),
                     Padding(
@@ -157,7 +174,9 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.grey.shade800,
               fontColor: Colors.white,
               onTap: () {
-                // profileUpdate(name, email);
+                profileUpdate(nameController.text, emailController.text,
+                    modal.profile!.user.id);
+                print("successful");
               },
             ),
           ],

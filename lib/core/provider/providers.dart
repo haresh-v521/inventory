@@ -23,18 +23,18 @@ class DataClass extends ChangeNotifier {
   TextEditingController priceController = TextEditingController();
   TextEditingController sellingItemController = TextEditingController();
   TextEditingController desController = TextEditingController();
+  TextEditingController pNameController = TextEditingController();
+  TextEditingController mrpController = TextEditingController();
+  TextEditingController sellingController = TextEditingController();
+  TextEditingController descController = TextEditingController();
 
-String name = "";
-  String email = "";
   dynamic dropSelectedValue = "";
   bool isLoading = true;
-  UserProfile? profile ;
-  Listing? list ;
+  UserProfile? profile;
+  Listing? list;
   ImagePicker picker = ImagePicker();
-  File? img ;
-  int page = 21 ;
+  File? img;
   List<Datum> items = [];
-
 
   List<DropdownMenuItem<String>> dropValues = <DropdownMenuItem<String>>[
     const DropdownMenuItem(
@@ -42,7 +42,7 @@ String name = "";
       child: Text("Male"),
     ),
     const DropdownMenuItem(
-      value:"FeMale",
+      value: "FeMale",
       child: Text("FeMale"),
     ),
     const DropdownMenuItem(
@@ -70,17 +70,19 @@ String name = "";
     notifyListeners();
   }
 
-  onDropChanged(val){
+  onDropChanged(val) {
     dropSelectedValue = val;
     notifyListeners();
   }
-  userResponse()async {
+
+  userResponse() async {
     isLoading = true;
     profile = await getUser();
-    isLoading = false ;
+    isLoading = false;
     notifyListeners();
   }
-  listResponse(int page)async {
+
+  listResponse(int page) async {
     isLoading = true;
     list = await getProduct(page);
     items.addAll(list!.data.data);
@@ -88,38 +90,42 @@ String name = "";
     notifyListeners();
   }
 
-  cancelact(){
+  cancelact() {
     productNameController.clear();
     priceController.clear();
     sellingItemController.clear();
     desController.clear();
+    img = null;
+    notifyListeners();
   }
-  imagePick(ImageSource source,BuildContext context) async {
+
+  imagePick(ImageSource source, context) async {
     XFile? image = await picker.pickImage(source: source);
-    if(image != null){
+    if (image != null) {
       img = File(image.path);
       Navigator.of(context).pop();
-    }else {
+    } else {
       Navigator.of(context).pop();
     }
     notifyListeners();
   }
-  openDialog(BuildContext context){
-     showDialog(
+
+  openDialog(BuildContext context) {
+    showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: const Text("Choose"),
           actions: [
             IconButton(
-              onPressed: (){
-                imagePick(ImageSource.camera,context);
+              onPressed: () {
+                imagePick(ImageSource.camera, context);
               },
               icon: const Icon(Icons.camera_alt),
             ),
             IconButton(
-              onPressed: (){
-                imagePick(ImageSource.gallery,context);
+              onPressed: () {
+                imagePick(ImageSource.gallery, context);
               },
               icon: const Icon(Icons.photo),
             ),
@@ -128,14 +134,15 @@ String name = "";
       },
     );
   }
-  // void pagination(){
-  //   if ((scrollController.position.pixels ==
-  //       scrollController.position.maxScrollExtent)) {
-  //     if(page >= list!.data.lastPage){
-  //       listResponse(page++);
-  //       notifyListeners();
-  //     }
-  //   }
-  //   notifyListeners();
-  // }
+
+  updateProduct(int id) {
+    productUpdate(pNameController.text, mrpController.text,
+        sellingController.text, descController.text, id);
+    notifyListeners();
+  }
+
+  delete(int id) {
+    productDelete(id);
+    notifyListeners();
+  }
 }

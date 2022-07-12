@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:login_figma/core/modal/add_product.dart';
@@ -35,6 +36,8 @@ Future registerPostData(
     final responseJson = res.data;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString('token', responseJson['token']);
+    await preferences.setString('email', email);
+    await preferences.setString('password', password);
     return PostData.fromJson(res.data);
   } else {
     throw Exception("Can't Register");
@@ -55,6 +58,7 @@ Future loginPostData(String email, String password) async {
     final responseJson = res.data;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString('token', responseJson['token']);
+
     return LoginUsers.fromJson(res.data);
   } else {
     throw Exception('Failed to login');
@@ -126,23 +130,23 @@ Future addProducts(
   }
 }
 
-Future productUpdate(String name, String mrp, String selling,
-    String description, File image) async {
-  String fileName = image.path.split('/').last;
+Future productUpdate(
+    String name, String mrp, String selling, String description, int id) async {
   var parameters = {
     "name": name,
     "mrp": mrp,
     "selling": selling,
     "description": description,
-    "image": await MultipartFile.fromFile(image.path, filename: fileName),
   };
+
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
-  Response res = await dio.put("${ApiUrl.baseUrl}products",
-      data: FormData.fromMap(parameters),
+  Response res = await dio.put("${ApiUrl.baseUrl}products/$id",
+      data: jsonEncode(parameters),
       options: Options(followRedirects: true, headers: {
         "Authorization": "Bearer $token",
       }));
+
   if (res.statusCode == 200) {
     return Add.fromJson(res.data);
   } else if (res.statusCode == 302) {
@@ -152,7 +156,7 @@ Future productUpdate(String name, String mrp, String selling,
   }
 }
 
-Future profileUpdate(String name, String email) async {
+Future profileUpdate(String name, String email, int id) async {
   var parameters = {
     "name": name,
     "email": email,
@@ -160,14 +164,13 @@ Future profileUpdate(String name, String email) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
 
-  Response res = await dio.post(
-    "${ApiUrl.baseUrl}profileUpdate/27",
-    data: FormData.fromMap(parameters),
+  Response res = await dio.put(
+    "${ApiUrl.baseUrl}profileUpdate/$id",
+    data: jsonEncode(parameters),
     options: Options(
       headers: {
         "Authorization": "Bearer $token",
       },
-      method: "POST",
     ),
   );
   if (res.statusCode == 200) {
@@ -177,6 +180,17 @@ Future profileUpdate(String name, String email) async {
   } else {
     throw Exception('failed to create product');
   }
+}
+
+Future productDelete(int id) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  String? token = prefs.getString('token');
+
+  Response res = await dio.delete("${ApiUrl.baseUrl}products/$id",
+      options: Options(followRedirects: true, headers: {
+        "Authorization": "Bearer $token",
+      }));
+  return res;
 }
 
 class MyHttpOverrides extends HttpOverrides {

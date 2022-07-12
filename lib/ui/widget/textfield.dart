@@ -14,21 +14,20 @@ class CustomInput extends StatelessWidget {
   final String? Function(String?)? onSaved;
   final bool value;
 
-  const CustomInput(
-      {Key? key,
-        this.text,
-        required this.type,
-        required this.val,
-        this.icon,
-        this.onTap,
-        required this.value,
-        this.controller,
-        required this.validator,
-        this.initialValue,
-        this.onChanged,
-        this.onSaved,
-      })
-      : super(key: key);
+  const CustomInput({
+    Key? key,
+    this.text,
+    required this.type,
+    required this.val,
+    this.icon,
+    this.onTap,
+    required this.value,
+    this.controller,
+    required this.validator,
+    this.initialValue,
+    this.onChanged,
+    this.onSaved,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,17 +42,16 @@ class CustomInput extends StatelessWidget {
         obscureText: val,
         onTap: onTap,
         onSaved: onSaved,
-        onChanged:onChanged,
+        onChanged: onChanged,
         readOnly: value,
         decoration: InputDecoration(
             suffixIcon: icon,
             border: const OutlineInputBorder(),
             labelText: text,
-            labelStyle: GoogleFonts.marmelad(textStyle: const TextStyle(
-                fontWeight: FontWeight.w400, fontSize: 14))
-        ),
+            labelStyle: GoogleFonts.marmelad(
+                textStyle: const TextStyle(
+                    fontWeight: FontWeight.w400, fontSize: 14))),
       ),
     );
   }
 }
-

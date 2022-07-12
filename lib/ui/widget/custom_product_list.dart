@@ -4,17 +4,25 @@ import 'package:google_fonts/google_fonts.dart';
 class ProductList extends StatelessWidget {
   final String image;
   final String bluImage;
-  final String bluText ;
-  final String price ;
-  final VoidCallback onTap ;
+  final String bluText;
+  final String price;
+  final VoidCallback onTap;
+  final VoidCallback onPressed;
 
-  const ProductList({Key? key, required this.image, required this.bluImage, required this.bluText, required this.price, required this.onTap})
+  const ProductList(
+      {Key? key,
+      required this.image,
+      required this.bluImage,
+      required this.bluText,
+      required this.price,
+      required this.onTap,
+      required this.onPressed})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 15, left: 15,bottom: 10),
+      padding: const EdgeInsets.only(right: 15, left: 15, bottom: 10),
       child: GestureDetector(
         onTap: onTap,
         child: Container(
@@ -86,6 +94,14 @@ class ProductList extends StatelessWidget {
                   ],
                 ),
               ),
+              const Spacer(),
+              IconButton(
+                onPressed: onPressed,
+                icon: const Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                ),
+              )
             ],
           ),
         ),

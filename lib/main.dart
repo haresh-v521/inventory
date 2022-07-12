@@ -14,7 +14,7 @@ import 'core/services/http_service.dart';
 
 void main() {
   runApp(
-     const Authenticate(),
+    const Authenticate(),
   );
   HttpOverrides.global = MyHttpOverrides();
 }
@@ -26,27 +26,47 @@ class Authenticate extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context)=>DataClass(),child: const LoginPage(),),
-        ChangeNotifierProvider(create: (context)=>DataClass(),child: const SignUp(),),
-        ChangeNotifierProvider(create: (context)=>DataClass(),child: const EditProfile(),),
-        ChangeNotifierProvider(create: (context)=>DataClass(),child: const ProfilePage(),),
-        ChangeNotifierProvider(create: (context)=>DataClass(),child: const AddProducts(),),
-        ChangeNotifierProvider(create: (context)=>DataClass(),child: const ProductDetail(),),
-        ChangeNotifierProvider(create: (context)=>DataClass(),child: const ProductListing(),),
+        ChangeNotifierProvider(
+          create: (context) => DataClass(),
+          child: const LoginPage(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DataClass(),
+          child: const SignUp(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DataClass(),
+          child: const EditProfile(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DataClass(),
+          child: const ProfilePage(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DataClass(),
+          child: const AddProducts(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DataClass(),
+          child: const ProductDetail(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DataClass(),
+          child: const ProductListing(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         routes: {
-          '/' : (context) => const HomePage(),
-          'login' : (context) => const LoginPage(),
-          'signUp' : (context) => const SignUp(),
-          'addProduct' : (context) => const AddProducts(),
-          'detail' : (context) => const ProductDetail(),
-          'listing' : (context) => const ProductListing(),
-          'profile' : (context) => const ProfilePage(),
-          'edit' : (context) => const EditProfile(),
+          '/': (context) => const HomePage(),
+          'login': (context) => const LoginPage(),
+          'signUp': (context) => const SignUp(),
+          'addProduct': (context) => const AddProducts(),
+          'detail': (context) => const ProductDetail(),
+          'listing': (context) => const ProductListing(),
+          'profile': (context) => const ProfilePage(),
+          'edit': (context) => const EditProfile(),
         },
-
       ),
     );
   }
