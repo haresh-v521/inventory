@@ -35,9 +35,8 @@ Future registerPostData(
   if (res.statusCode == 200) {
     final responseJson = res.data;
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    await preferences.setString('token', responseJson['token']);
-    await preferences.setString('email', email);
-    await preferences.setString('password', password);
+    var token = await preferences.setString('token', responseJson['token']);
+    print(token);
     return PostData.fromJson(res.data);
   } else {
     throw Exception("Can't Register");
@@ -58,7 +57,7 @@ Future loginPostData(String email, String password) async {
     final responseJson = res.data;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString('token', responseJson['token']);
-
+    print(responseJson['token']);
     return LoginUsers.fromJson(res.data);
   } else {
     throw Exception('Failed to login');
@@ -74,10 +73,10 @@ Future getUser() async {
     options: Options(
       headers: {
         HttpHeaders.authorizationHeader: "Bearer $token",
-        HttpHeaders.contentTypeHeader: "application/json"
       },
     ),
   );
+  print(res.statusCode);
   if (res.statusCode == 200) {
     return UserProfile.fromJson(res.data);
   } else {

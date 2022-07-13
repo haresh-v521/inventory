@@ -133,16 +133,18 @@ class _ProductListingState extends State<ProductListing> {
                       itemBuilder: (context, i) {
                         return ProductList(
                           onTap: () {
-                            Navigator.of(context)
-                                .pushNamed('detail', arguments: [
-                              (modal.items[i].img == null)
-                                  ? AppString.noImage
-                                  : "${modal.items[i].img}",
-                              "${modal.items[i].mrp}",
-                              modal.items[i].name,
-                              modal.items[i].id,
-                              modal.items[i].description,
-                            ]);
+                            Navigator.of(context).pushNamed(
+                              'detail',
+                              arguments: [
+                                (modal.items[i].img == null)
+                                    ? AppString.noImage
+                                    : modal.items[i].img,
+                                modal.items[i].mrp,
+                                modal.items[i].name,
+                                modal.items[i].id,
+                                modal.items[i].description,
+                              ],
+                            );
                           },
                           image: AppString.playImg,
                           onPressed: () {

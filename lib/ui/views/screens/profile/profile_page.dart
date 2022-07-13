@@ -95,9 +95,10 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           CustomContainer(text: "${modal.profile?.user.name}"),
                           CustomContainer(text: "${modal.profile?.user.email}"),
-                          CustomContainer(text: "${modal.profile?.user.gender}"),
-                          CustomContainer(text:
-                                "${modal.profile?.user.birthDate.day}/${modal.profile?.user.birthDate.month}/${modal.profile?.user.birthDate.year}",
+                          CustomContainer(
+                              text: "${modal.profile?.user.gender}"),
+                          CustomContainer(
+                            text: "${modal.profile?.user.birthDate}",
                           ),
                         ],
                       ),

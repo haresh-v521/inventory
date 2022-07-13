@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:login_figma/core/modal/list_product_modal.dart';
 import 'dart:io';
+import '../modal/register_post_data_modal.dart';
 import '../modal/user_profile_modal.dart';
 import '../services/http_service.dart';
 
@@ -32,6 +33,7 @@ class DataClass extends ChangeNotifier {
   bool isLoading = true;
   UserProfile? profile;
   Listing? list;
+  PostData? post;
   ImagePicker picker = ImagePicker();
   File? img;
   List<Datum> items = [];
@@ -51,7 +53,7 @@ class DataClass extends ChangeNotifier {
     ),
   ];
 
-  onTap(BuildContext context) async {
+  onTap(context) async {
     DateTime? selected = await showDatePicker(
       context: context,
       initialDate: initialDate,
@@ -59,7 +61,7 @@ class DataClass extends ChangeNotifier {
       lastDate: DateTime(2100),
     );
     if (selected != null) {
-      String formattedDate = DateFormat('dd MMMM,yyyy').format(selected);
+      String formattedDate = DateFormat.yMd().format(selected);
       dateController.text = formattedDate;
       notifyListeners();
     }
@@ -78,6 +80,20 @@ class DataClass extends ChangeNotifier {
   userResponse() async {
     isLoading = true;
     profile = await getUser();
+    isLoading = false;
+    notifyListeners();
+  }
+
+  postData() async {
+    isLoading = true;
+    post = await registerPostData(
+      nameController.text,
+      emailController.text,
+      passwordController.text,
+      dateController.text,
+      dropSelectedValue,
+      confirmPasswordController.text,
+    );
     isLoading = false;
     notifyListeners();
   }

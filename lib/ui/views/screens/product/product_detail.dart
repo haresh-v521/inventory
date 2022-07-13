@@ -66,7 +66,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     child: Image.network(
                       "${res[0]}",
                       height: 140,
-                      width: 140,
+                      width: 160,
                       fit: BoxFit.cover,
                     )),
               ),

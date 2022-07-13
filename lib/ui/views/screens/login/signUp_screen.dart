@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/provider/providers.dart';
-import '../../../../core/services/http_service.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
@@ -102,7 +101,8 @@ class _SignUpState extends State<SignUp> {
                         validator: (String? val) {
                           if (val!.isEmpty) {
                             return "Please Enter your email";
-                          }  if (!RegExp(r'\S+@\S+\.\S+').hasMatch(val)) {
+                          }
+                          if (!RegExp(r'\S+@\S+\.\S+').hasMatch(val)) {
                             return "Please enter a valid email address";
                           }
                           return null;
@@ -132,7 +132,8 @@ class _SignUpState extends State<SignUp> {
                         validator: (String? val) {
                           if (val!.isEmpty) {
                             return "Please Enter your password again";
-                          }else if(modal.passwordController.text != modal.confirmPasswordController.text){
+                          } else if (modal.passwordController.text !=
+                              modal.confirmPasswordController.text) {
                             return "Password is not match ";
                           }
                           return null;
@@ -142,7 +143,8 @@ class _SignUpState extends State<SignUp> {
                         children: [
                           Expanded(
                             child: Padding(
-                              padding:  const EdgeInsets.only(right: 18,left: 18,top: 15,bottom: 5),
+                              padding: const EdgeInsets.only(
+                                  right: 18, left: 18, top: 15, bottom: 5),
                               child: DropdownButtonFormField(
                                 hint: const Text("Select"),
                                 decoration: const InputDecoration(
@@ -181,16 +183,9 @@ class _SignUpState extends State<SignUp> {
                         fontColor: Colors.white,
                         onTap: () {
                           if (modal.key.currentState!.validate()) {
-                          registerPostData(
-                                modal.nameController.text,
-                                modal.emailController.text,
-                                modal.passwordController.text,
-                                modal.dateController.text,
-                                modal.dropSelectedValue,
-                                modal.confirmPasswordController.text,
-                            );
+                            modal.postData();
                             Navigator.of(context)
-                                .pushReplacementNamed('profile');
+                                .pushReplacementNamed('listing');
                           }
                         },
                       ),

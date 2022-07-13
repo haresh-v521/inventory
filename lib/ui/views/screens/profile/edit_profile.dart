@@ -155,8 +155,7 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                     ),
                     CustomListTile(
-                      text:
-                          "${modal.profile?.user.birthDate.day} /${modal.profile?.user.birthDate.month} /${modal.profile?.user.birthDate.year}",
+                      text: "${modal.profile?.user.birthDate}",
                       callback: () {
                         modal.onTap(context);
                       },
@@ -176,6 +175,7 @@ class _EditProfileState extends State<EditProfile> {
               onTap: () {
                 profileUpdate(nameController.text, emailController.text,
                     modal.profile!.user.id);
+                Navigator.of(context).pop();
                 print("successful");
               },
             ),
