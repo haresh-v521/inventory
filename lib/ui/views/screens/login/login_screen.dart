@@ -34,7 +34,7 @@ class _LoginPageState extends State<LoginPage> {
               alignment: Alignment.topLeft,
               height: MediaQuery.of(context).size.height / 1.5,
               width: MediaQuery.of(context).size.width,
-              decoration:  const BoxDecoration(
+              decoration: const BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(AppString.image),
                   fit: BoxFit.cover,
@@ -88,8 +88,8 @@ class _LoginPageState extends State<LoginPage> {
                         val: false,
                         value: false,
                         validator: (String? val) {
-                          if(val!.isEmpty){
-                           return "Please Enter Valid Email";
+                          if (val!.isEmpty) {
+                            return "Please Enter Valid Email";
                           }
                           return null;
                         },
@@ -103,15 +103,15 @@ class _LoginPageState extends State<LoginPage> {
                         validator: (String? val) {
                           if (val!.isEmpty) {
                             return "Please Enter your password";
-                          } else if (val.length > 6) {
+                          } else if (val.length < 6) {
                             return "Password must be at least 6 character long";
                           }
                           return null;
                         },
                       ),
                       Padding(
-                        padding:
-                            const EdgeInsets.only(right: 14, top: 15, bottom: 20),
+                        padding: const EdgeInsets.only(
+                            right: 14, top: 15, bottom: 20),
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
@@ -131,14 +131,19 @@ class _LoginPageState extends State<LoginPage> {
                         color: Colors.grey.shade800,
                         fontColor: Colors.white,
                         onTap: () {
-                          if(modal.loginKey.currentState!.validate()){
+                          if (modal.loginKey.currentState!.validate()) {
                             loginPostData(
                               modal.loginEmailController.text,
                               modal.loginPasswordController.text,
                             );
-                            Navigator.of(context).pushReplacementNamed('listing');
-                          }else {
-                            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Login Failed")));
+                            Navigator.of(context)
+                                .pushReplacementNamed('listing');
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Login Failed"),
+                              ),
+                            );
                           }
                         },
                       ),

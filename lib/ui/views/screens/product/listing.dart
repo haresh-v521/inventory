@@ -79,11 +79,15 @@ class _ProductListingState extends State<ProductListing> {
           backgroundColor: Colors.transparent,
         ),
         drawer: Drawer(
+          backgroundColor: Colors.grey.shade300,
           child: Column(
             children: [
-              const DrawerHeader(
+              DrawerHeader(
                 child: CircleAvatar(
-                  radius: 50,
+                  radius: 60,
+                  backgroundImage: (modal.profile?.user.gender == "FeMale")
+                      ? const AssetImage(AppString.female)
+                      : const AssetImage(AppString.male),
                 ),
               ),
               CustomListTile(

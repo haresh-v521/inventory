@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:login_figma/core/services/http_service.dart';
 import 'package:login_figma/ui/widget/textfield.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/provider/providers.dart';
@@ -16,8 +15,6 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
   late DataClass modal;
 
   @override
@@ -28,15 +25,13 @@ class _EditProfileState extends State<EditProfile> {
   @override
   void didChangeDependencies() {
     modal = Provider.of<DataClass>(context);
-    nameController.text = modal.profile!.user.name;
-    emailController.text = modal.profile!.user.email;
+    modal.updateNameController.text = modal.profile!.user.name;
+    modal.updateEmailController.text = modal.profile!.user.email;
     super.didChangeDependencies();
   }
 
   @override
   Widget build(BuildContext context) {
-    final modal = Provider.of<DataClass>(context);
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -66,12 +61,14 @@ class _EditProfileState extends State<EditProfile> {
                 children: [
                   Stack(
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(top: 20),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 20),
                         child: CircleAvatar(
                           radius: 50,
                           backgroundImage:
-                              AssetImage("assets/images/img_1.png"),
+                              (modal.profile?.user.gender == "FeMale")
+                                  ? const AssetImage(AppString.female)
+                                  : const AssetImage(AppString.male),
                         ),
                       ),
                       Positioned(
@@ -123,7 +120,7 @@ class _EditProfileState extends State<EditProfile> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomInput(
-                      controller: nameController,
+                      controller: modal.updateNameController,
                       type: TextInputType.name,
                       val: false,
                       value: false,
@@ -133,7 +130,7 @@ class _EditProfileState extends State<EditProfile> {
                       icon: const Icon(Icons.edit),
                     ),
                     CustomInput(
-                      controller: emailController,
+                      controller: modal.updateEmailController,
                       type: TextInputType.emailAddress,
                       val: false,
                       value: false,
@@ -154,15 +151,20 @@ class _EditProfileState extends State<EditProfile> {
                         onChanged: modal.onDropChanged,
                       ),
                     ),
-                    CustomListTile(
-                      text: "${modal.profile?.user.birthDate}",
-                      callback: () {
-                        modal.onTap(context);
-                      },
-                      icon: const Icon(
-                        Icons.calendar_today,
+                    Padding(
+                      padding: const EdgeInsets.only(
+                          right: 10, left: 10, top: 5, bottom: 5),
+                      child: CustomListTile(
+                        text:
+                            "${modal.profile?.user.birthDate.day} / ${modal.profile?.user.birthDate.month} / ${modal.profile?.user.birthDate.year}",
+                        callback: () {
+                          modal.onTap(context);
+                        },
+                        icon: const Icon(
+                          Icons.calendar_today,
+                        ),
+                        color: Colors.grey,
                       ),
-                      color: Colors.black,
                     ),
                   ],
                 ),
@@ -173,10 +175,8 @@ class _EditProfileState extends State<EditProfile> {
               color: Colors.grey.shade800,
               fontColor: Colors.white,
               onTap: () {
-                profileUpdate(nameController.text, emailController.text,
-                    modal.profile!.user.id);
+                modal.updateProfile();
                 Navigator.of(context).pop();
-                print("successful");
               },
             ),
           ],

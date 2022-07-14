@@ -3,6 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:login_figma/core/modal/list_product_modal.dart';
 import 'dart:io';
+import '../modal/profile_update_modal.dart';
 import '../modal/register_post_data_modal.dart';
 import '../modal/user_profile_modal.dart';
 import '../services/http_service.dart';
@@ -10,6 +11,8 @@ import '../services/http_service.dart';
 class DataClass extends ChangeNotifier {
   GlobalKey<FormState> key = GlobalKey<FormState>();
   GlobalKey<FormState> loginKey = GlobalKey<FormState>();
+  GlobalKey<FormState> productKey = GlobalKey<FormState>();
+  GlobalKey<FormState> updateProductKey = GlobalKey<FormState>();
   DateTime initialDate = DateTime.now();
   double rating = 0;
 
@@ -28,10 +31,13 @@ class DataClass extends ChangeNotifier {
   TextEditingController mrpController = TextEditingController();
   TextEditingController sellingController = TextEditingController();
   TextEditingController descController = TextEditingController();
+  TextEditingController updateNameController = TextEditingController();
+  TextEditingController updateEmailController = TextEditingController();
 
   dynamic dropSelectedValue = "";
   bool isLoading = true;
   UserProfile? profile;
+  ProfileUpdate? update;
   Listing? list;
   PostData? post;
   ImagePicker picker = ImagePicker();
@@ -65,6 +71,14 @@ class DataClass extends ChangeNotifier {
       dateController.text = formattedDate;
       notifyListeners();
     }
+  }
+
+  updateProfile() async {
+    isLoading = true;
+    update = await profileUpdate(updateNameController.text,
+        updateEmailController.text, profile!.user.id);
+    isLoading = false;
+    notifyListeners();
   }
 
   updateRating(double rates) {
@@ -126,7 +140,7 @@ class DataClass extends ChangeNotifier {
     notifyListeners();
   }
 
-  openDialog(BuildContext context) {
+  openDialog(context) {
     showDialog(
       context: context,
       builder: (context) {
@@ -159,6 +173,7 @@ class DataClass extends ChangeNotifier {
 
   delete(int id) {
     productDelete(id);
+    items;
     notifyListeners();
   }
 }

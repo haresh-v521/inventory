@@ -55,12 +55,14 @@ class _ProfilePageState extends State<ProfilePage> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.only(top: 20),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
                           child: CircleAvatar(
                             radius: 50,
                             backgroundImage:
-                                AssetImage("assets/images/img_1.png"),
+                                (modal.profile?.user.gender == "FeMale")
+                                    ? const AssetImage(AppString.female)
+                                    : const AssetImage(AppString.male),
                           ),
                         ),
                         Padding(
@@ -98,8 +100,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           CustomContainer(
                               text: "${modal.profile?.user.gender}"),
                           CustomContainer(
-                            text: "${modal.profile?.user.birthDate}",
-                          ),
+                              text:
+                                  "${modal.profile?.user.birthDate.day} / ${modal.profile?.user.birthDate.month} / ${modal.profile?.user.birthDate.year}"),
                         ],
                       ),
                     ),

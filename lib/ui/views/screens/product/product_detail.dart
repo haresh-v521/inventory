@@ -119,7 +119,7 @@ class _ProductDetailState extends State<ProductDetail> {
             ),
             CustomText(
               color: Colors.grey.shade500,
-              text: res[4],
+              text: res[4].toString().toUpperCase(),
               size: 16,
             ),
             CustomText(
@@ -166,55 +166,81 @@ class _ProductDetailState extends State<ProductDetail> {
                   context: context,
                   builder: (context) {
                     return Material(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          CustomInput(
-                            controller: modal.pNameController,
-                            type: TextInputType.name,
-                            text: "Product name",
-                            val: false,
-                            value: false,
-                            validator: (val) {},
-                          ),
-                          CustomInput(
-                            controller: modal.mrpController,
-                            text: "Product mrp",
-                            type: TextInputType.name,
-                            val: false,
-                            value: false,
-                            validator: (val) {},
-                          ),
-                          CustomInput(
-                            controller: modal.sellingController,
-                            type: TextInputType.name,
-                            text: "Product selling item",
-                            val: false,
-                            value: false,
-                            validator: (val) {},
-                          ),
-                          CustomInput(
-                            controller: modal.descController,
-                            text: "Product description",
-                            type: TextInputType.name,
-                            val: false,
-                            value: false,
-                            validator: (val) {},
-                          ),
-                          CustomButton(
-                              onTap: () {
-                                modal.updateProduct(res[3]);
-                                Navigator.of(context).pop();
+                      child: Form(
+                        key: modal.updateProductKey,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CustomInput(
+                              controller: modal.pNameController,
+                              type: TextInputType.name,
+                              text: "Product name",
+                              val: false,
+                              value: false,
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return "Please Enter Product name";
+                                }
+                                return null;
                               },
-                              text: "UPDATE",
-                              color: Colors.grey.shade800,
-                              fontColor: Colors.white),
-                          CustomButton(
-                              onTap: () {},
-                              text: "CANCEL",
-                              color: Colors.grey.shade800,
-                              fontColor: Colors.white)
-                        ],
+                            ),
+                            CustomInput(
+                              controller: modal.mrpController,
+                              text: "Product mrp",
+                              type: TextInputType.name,
+                              val: false,
+                              value: false,
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return "Please Enter Product Price";
+                                }
+                                return null;
+                              },
+                            ),
+                            CustomInput(
+                              controller: modal.sellingController,
+                              type: TextInputType.name,
+                              text: "Product selling item",
+                              val: false,
+                              value: false,
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return "Please Enter Product Selling item";
+                                }
+                                return null;
+                              },
+                            ),
+                            CustomInput(
+                              controller: modal.descController,
+                              text: "Product description",
+                              type: TextInputType.name,
+                              val: false,
+                              value: false,
+                              validator: (val) {
+                                if (val!.isEmpty) {
+                                  return "Please Enter Product Description";
+                                }
+                                return null;
+                              },
+                            ),
+                            CustomButton(
+                                onTap: () {
+                                  if (modal.updateProductKey.currentState!
+                                      .validate()) {
+                                    modal.updateProduct(res[3]);
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                                text: "UPDATE",
+                                color: Colors.grey.shade800,
+                                fontColor: Colors.white),
+                            CustomButton(
+                                onTap: () {},
+                                text: "CANCEL",
+                                color: Colors.grey.shade800,
+                                fontColor: Colors.white)
+                          ],
+                        ),
                       ),
                     );
                   },

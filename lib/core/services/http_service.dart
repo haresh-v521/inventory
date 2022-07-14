@@ -28,15 +28,17 @@ Future registerPostData(
     "password_confirmation": passwordConfirm,
   };
 
-  Response res = await dio.post("${ApiUrl.baseUrl}register",
-      data: FormData.fromMap(parameters),
-      options:
-          Options(headers: {HttpHeaders.authorizationHeader: "Bearer token"}));
+  Response res = await dio.post(
+    "${ApiUrl.baseUrl}register",
+    data: FormData.fromMap(parameters),
+    options: Options(
+      headers: {HttpHeaders.authorizationHeader: "Bearer token"},
+    ),
+  );
   if (res.statusCode == 200) {
     final responseJson = res.data;
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var token = await preferences.setString('token', responseJson['token']);
-    print(token);
+    await preferences.setString('token', responseJson['token']);
     return PostData.fromJson(res.data);
   } else {
     throw Exception("Can't Register");
@@ -57,7 +59,6 @@ Future loginPostData(String email, String password) async {
     final responseJson = res.data;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString('token', responseJson['token']);
-    print(responseJson['token']);
     return LoginUsers.fromJson(res.data);
   } else {
     throw Exception('Failed to login');
@@ -76,7 +77,6 @@ Future getUser() async {
       },
     ),
   );
-  print(res.statusCode);
   if (res.statusCode == 200) {
     return UserProfile.fromJson(res.data);
   } else {
@@ -189,7 +189,7 @@ Future productDelete(int id) async {
       options: Options(followRedirects: true, headers: {
         "Authorization": "Bearer $token",
       }));
-  return res;
+  return res.data;
 }
 
 class MyHttpOverrides extends HttpOverrides {
