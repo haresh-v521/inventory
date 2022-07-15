@@ -6,12 +6,15 @@ class CustomButton extends StatelessWidget {
   final String text;
   final Color color;
   final Color fontColor;
+  final BoxBorder? border;
+
   const CustomButton(
       {Key? key,
       required this.onTap,
       required this.text,
       required this.color,
-      required this.fontColor})
+      required this.fontColor,
+      this.border})
       : super(key: key);
 
   @override
@@ -23,14 +26,20 @@ class CustomButton extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         alignment: Alignment.center,
         decoration: BoxDecoration(
+          border: border,
           color: color,
           borderRadius: BorderRadius.circular(50),
         ),
-        child: Text(text,
-            style: GoogleFonts.marmelad(
-              textStyle: TextStyle(
-                  color: fontColor, fontSize: 18, fontWeight: FontWeight.w400),
-            )),
+        child: Text(
+          text,
+          style: GoogleFonts.marmelad(
+            textStyle: TextStyle(
+              color: fontColor,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ),
       ),
     );
   }

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:login_figma/core/modal/add_product.dart';
 import 'package:login_figma/core/modal/list_product_modal.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:io';
+import '../modal/login_post_data_modal.dart';
+import '../modal/product_update_modal.dart';
 import '../modal/profile_update_modal.dart';
 import '../modal/register_post_data_modal.dart';
 import '../modal/user_profile_modal.dart';
@@ -38,10 +42,14 @@ class DataClass extends ChangeNotifier {
   bool isLoading = true;
   UserProfile? profile;
   ProfileUpdate? update;
+  UpdateProduct? product;
+  Add? productsAdd;
   Listing? list;
   PostData? post;
+  LoginUsers? user;
   ImagePicker picker = ImagePicker();
   File? img;
+  bool? status;
   List<Datum> items = [];
 
   List<DropdownMenuItem<String>> dropValues = <DropdownMenuItem<String>>[
@@ -73,11 +81,22 @@ class DataClass extends ChangeNotifier {
     }
   }
 
+  loginData() async {
+    isLoading = true;
+    user = await loginPostData(
+      loginEmailController.text,
+      loginPasswordController.text,
+    );
+    isLoading = false;
+    notifyListeners();
+  }
+
   updateProfile() async {
     isLoading = true;
     update = await profileUpdate(updateNameController.text,
         updateEmailController.text, profile!.user.id);
     isLoading = false;
+    profile = await getUser();
     notifyListeners();
   }
 
@@ -103,7 +122,9 @@ class DataClass extends ChangeNotifier {
     post = await registerPostData(
       nameController.text,
       emailController.text,
-      passwordController.text,
+      int.parse(
+        passwordController.text,
+      ),
       dateController.text,
       dropSelectedValue,
       confirmPasswordController.text,
@@ -165,15 +186,30 @@ class DataClass extends ChangeNotifier {
     );
   }
 
-  updateProduct(int id) {
-    productUpdate(pNameController.text, mrpController.text,
+  addProduct() async {
+    productsAdd = await addProducts(
+      productNameController.text,
+      int.parse(priceController.text),
+      int.parse(sellingItemController.text),
+      desController.text,
+      img!,
+    );
+    notifyListeners();
+  }
+
+  updateProduct(int id) async {
+    isLoading = true;
+    product = await productUpdate(pNameController.text, mrpController.text,
         sellingController.text, descController.text, id);
+    isLoading = false;
+    list = await getProduct(21);
     notifyListeners();
   }
 
   delete(int id) {
+    isLoading = true;
     productDelete(id);
-    items;
+    isLoading = false;
     notifyListeners();
   }
 }

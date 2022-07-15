@@ -12,7 +12,8 @@ import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'core/services/http_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(
     const Authenticate(),
   );

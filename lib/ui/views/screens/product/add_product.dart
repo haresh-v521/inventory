@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/provider/providers.dart';
-import '../../../../core/services/http_service.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
+import 'listing.dart';
 
 class AddProducts extends StatelessWidget {
   const AddProducts({Key? key}) : super(key: key);
@@ -113,16 +113,12 @@ class AddProducts extends StatelessWidget {
                   fontColor: Colors.white,
                   onTap: () {
                     if (modal.productKey.currentState!.validate()) {
-                      addProducts(
-                        modal.productNameController.text,
-                        int.parse(modal.priceController.text),
-                        int.parse(
-                          modal.sellingItemController.text,
+                      modal.addProduct();
+                      Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(
+                          builder: (context) => const ProductListing(),
                         ),
-                        modal.desController.text,
-                        modal.img!,
                       );
-                      Navigator.of(context).pushNamed("listing");
                       modal.cancelact();
                     }
                   },

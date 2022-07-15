@@ -17,11 +17,22 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
+  late DataClass modal;
+  late dynamic res;
+
+  @override
+  void didChangeDependencies() {
+    modal = Provider.of<DataClass>(context);
+    res = ModalRoute.of(context)!.settings.arguments;
+    modal.pNameController.text = res[2];
+    modal.mrpController.text = res[1].toString();
+    modal.sellingController.text = res[5].toString();
+    modal.descController.text = res[4].toString();
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final modal = Provider.of<DataClass>(context);
-    dynamic res = ModalRoute.of(context)!.settings.arguments;
-
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       extendBodyBehindAppBar: true,
@@ -187,7 +198,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             CustomInput(
                               controller: modal.mrpController,
                               text: "Product mrp",
-                              type: TextInputType.name,
+                              type: TextInputType.number,
                               val: false,
                               value: false,
                               validator: (val) {
@@ -199,7 +210,7 @@ class _ProductDetailState extends State<ProductDetail> {
                             ),
                             CustomInput(
                               controller: modal.sellingController,
-                              type: TextInputType.name,
+                              type: TextInputType.number,
                               text: "Product selling item",
                               val: false,
                               value: false,
@@ -235,7 +246,9 @@ class _ProductDetailState extends State<ProductDetail> {
                                 color: Colors.grey.shade800,
                                 fontColor: Colors.white),
                             CustomButton(
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
                                 text: "CANCEL",
                                 color: Colors.grey.shade800,
                                 fontColor: Colors.white)

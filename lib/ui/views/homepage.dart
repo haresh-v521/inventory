@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_figma/ui/views/screens/login/login_screen.dart';
+import 'package:login_figma/ui/views/screens/login/signUp_screen.dart';
+import 'package:login_figma/utils/constant/app_assets.dart';
 
 import '../../utils/constant/app_string.dart';
 import '../widget/login_button.dart';
@@ -12,12 +15,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +26,7 @@ class _HomePageState extends State<HomePage> {
       body: Container(
         decoration: const BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(AppString.image),
+            image: AssetImage(Assets.image),
             fit: BoxFit.cover,
           ),
         ),
@@ -72,7 +69,11 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               fontColor: Colors.black,
               onTap: () {
-                Navigator.of(context).pushReplacementNamed('login');
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const LoginPage(),
+                  ),
+                );
               },
             ),
             CustomButton(
@@ -80,7 +81,11 @@ class _HomePageState extends State<HomePage> {
               color: Colors.white,
               fontColor: Colors.black,
               onTap: () {
-                Navigator.of(context).pushReplacementNamed('signUp');
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const SignUp(),
+                  ),
+                );
               },
             ),
             const Spacer()

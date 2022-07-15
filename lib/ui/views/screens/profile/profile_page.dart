@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_figma/ui/views/screens/profile/edit_profile.dart';
+import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../core/provider/providers.dart';
@@ -61,8 +63,8 @@ class _ProfilePageState extends State<ProfilePage> {
                             radius: 50,
                             backgroundImage:
                                 (modal.profile?.user.gender == "FeMale")
-                                    ? const AssetImage(AppString.female)
-                                    : const AssetImage(AppString.male),
+                                    ? const AssetImage(Assets.female)
+                                    : const AssetImage(Assets.male),
                           ),
                         ),
                         Padding(
@@ -111,7 +113,11 @@ class _ProfilePageState extends State<ProfilePage> {
                     color: Colors.grey.shade800,
                     fontColor: Colors.white,
                     onTap: () {
-                      Navigator.of(context).pushNamed('edit');
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const EditProfile(),
+                        ),
+                      );
                     },
                   ),
                 ],

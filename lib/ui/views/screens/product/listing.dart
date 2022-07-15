@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_figma/core/provider/providers.dart';
+import 'package:login_figma/ui/views/screens/login/login_screen.dart';
+import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
+import 'package:login_figma/ui/widget/login_button.dart';
+import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:provider/provider.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/custom_product_list.dart';
 import '../../../widget/listtile.dart';
+import 'add_product.dart';
 
 class ProductListing extends StatefulWidget {
   const ProductListing({Key? key}) : super(key: key);
@@ -34,7 +39,7 @@ class _ProductListingState extends State<ProductListing> {
           if (page <= modal.list!.data.lastPage) {
             modal.listResponse(page += 1);
           } else {
-            scrollController.dispose();
+            return;
           }
         }
       });
@@ -68,7 +73,11 @@ class _ProductListingState extends State<ProductListing> {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('addProduct');
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const AddProducts(),
+                  ),
+                );
               },
               icon: const Icon(
                 Icons.add,
@@ -86,8 +95,8 @@ class _ProductListingState extends State<ProductListing> {
                 child: CircleAvatar(
                   radius: 60,
                   backgroundImage: (modal.profile?.user.gender == "FeMale")
-                      ? const AssetImage(AppString.female)
-                      : const AssetImage(AppString.male),
+                      ? const AssetImage(Assets.female)
+                      : const AssetImage(Assets.male),
                 ),
               ),
               CustomListTile(
@@ -95,7 +104,11 @@ class _ProductListingState extends State<ProductListing> {
                 icon: const Icon(Icons.add),
                 color: Colors.transparent,
                 callback: () {
-                  Navigator.of(context).pushNamed('login');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
                 },
               ),
               CustomListTile(
@@ -103,7 +116,11 @@ class _ProductListingState extends State<ProductListing> {
                 icon: const Icon(Icons.person),
                 color: Colors.transparent,
                 callback: () {
-                  Navigator.of(context).pushNamed('profile');
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => const ProfilePage(),
+                    ),
+                  );
                 },
               ),
             ],
@@ -141,28 +158,64 @@ class _ProductListingState extends State<ProductListing> {
                               'detail',
                               arguments: [
                                 (modal.items[i].img == null)
-                                    ? AppString.noImage
+                                    ? Assets.noImage
                                     : modal.items[i].img,
                                 modal.items[i].mrp,
                                 modal.items[i].name,
                                 modal.items[i].id,
                                 modal.items[i].description,
+                                modal.items[i].selling,
                               ],
                             );
                           },
-                          image: AppString.playImg,
+                          image: Assets.playImg,
                           onPressed: () {
-                            modal.delete(modal.items[i].id);
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                backgroundColor: Colors.red,
-                                behavior: SnackBarBehavior.floating,
-                                content: Text("Product Deleted Successfully"),
-                              ),
-                            );
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    title: const Text(
+                                      AppString.delete,
+                                    ),
+                                    content: const Text(
+                                      AppString.record,
+                                    ),
+                                    actions: [
+                                      CustomButton(
+                                        onTap: () {
+                                          modal.delete(modal.items[i].id);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(
+                                            const SnackBar(
+                                              backgroundColor: Colors.red,
+                                              behavior:
+                                                  SnackBarBehavior.floating,
+                                              content: Text(
+                                                "Product Deleted Successfully",
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        text: 'DELETE',
+                                        fontColor: Colors.white,
+                                        color: Colors.grey.shade800,
+                                      ),
+                                      CustomButton(
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                        text: 'CANCEL',
+                                        border: Border.all(
+                                            color: Colors.grey.shade800),
+                                        fontColor: Colors.grey.shade800,
+                                        color: Colors.white,
+                                      ),
+                                    ],
+                                  );
+                                });
                           },
                           bluImage: (modal.items[i].img == null)
-                              ? AppString.noImage
+                              ? Assets.noImage
                               : "${modal.items[i].img}",
                           price: "Price : ${modal.items[i].mrp}",
                           bluText: modal.items[i].name.toUpperCase(),

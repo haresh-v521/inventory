@@ -1,11 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_figma/ui/views/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../core/provider/providers.dart';
+import '../../../../utils/constant/app_assets.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
+import '../product/listing.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
@@ -33,7 +37,7 @@ class _SignUpState extends State<SignUp> {
             width: MediaQuery.of(context).size.width,
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(AppString.image),
+                image: AssetImage(Assets.image),
                 fit: BoxFit.cover,
               ),
             ),
@@ -148,7 +152,7 @@ class _SignUpState extends State<SignUp> {
                               child: DropdownButtonFormField(
                                 hint: const Text("Select"),
                                 decoration: const InputDecoration(
-                                  labelText: "Gender",
+                                  labelText: AppString.gender,
                                   border: OutlineInputBorder(),
                                 ),
                                 items: modal.dropValues,
@@ -181,11 +185,21 @@ class _SignUpState extends State<SignUp> {
                         text: AppString.sign,
                         color: Colors.grey.shade800,
                         fontColor: Colors.white,
-                        onTap: () {
+                        onTap: () async {
                           if (modal.key.currentState!.validate()) {
                             modal.postData();
-                            Navigator.of(context)
-                                .pushReplacementNamed('listing');
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const ProductListing(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content:
+                                    Text("Sign in failed? Please try again"),
+                              ),
+                            );
                           }
                         },
                       ),
@@ -214,8 +228,11 @@ class _SignUpState extends State<SignUp> {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('login');
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) => const LoginPage(),
+                                      ),
+                                    );
                                   },
                               ),
                             ],

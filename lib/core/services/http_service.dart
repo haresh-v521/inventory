@@ -14,7 +14,7 @@ var dio = Dio();
 Future registerPostData(
   String name,
   String email,
-  String password,
+  int password,
   String dob,
   String gender,
   String passwordConfirm,
@@ -35,10 +35,14 @@ Future registerPostData(
       headers: {HttpHeaders.authorizationHeader: "Bearer token"},
     ),
   );
+
   if (res.statusCode == 200) {
     final responseJson = res.data;
     SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString('token', responseJson['token']);
+    await preferences.setString('email', email);
+    await preferences.setInt('password', password);
+
     return PostData.fromJson(res.data);
   } else {
     throw Exception("Can't Register");
@@ -55,13 +59,14 @@ Future loginPostData(String email, String password) async {
     "${ApiUrl.baseUrl}login",
     data: FormData.fromMap(parameters),
   );
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+
   if (res.statusCode == 200) {
     final responseJson = res.data;
-    SharedPreferences preferences = await SharedPreferences.getInstance();
     await preferences.setString('token', responseJson['token']);
     return LoginUsers.fromJson(res.data);
   } else {
-    throw Exception('Failed to login');
+    return;
   }
 }
 
@@ -185,11 +190,11 @@ Future productDelete(int id) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
 
-  Response res = await dio.delete("${ApiUrl.baseUrl}products/$id",
+  await dio.delete("${ApiUrl.baseUrl}products/$id",
       options: Options(followRedirects: true, headers: {
         "Authorization": "Bearer $token",
       }));
-  return res.data;
+  return;
 }
 
 class MyHttpOverrides extends HttpOverrides {

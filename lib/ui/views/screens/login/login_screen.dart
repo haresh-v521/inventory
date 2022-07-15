@@ -1,10 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_figma/ui/views/screens/login/signUp_screen.dart';
+import 'package:login_figma/ui/views/screens/product/listing.dart';
+import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:provider/provider.dart';
-
 import '../../../../core/provider/providers.dart';
-import '../../../../core/services/http_service.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
@@ -18,7 +19,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     final modal = Provider.of<DataClass>(context);
     return SafeArea(
       child: Scaffold(
@@ -36,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
               width: MediaQuery.of(context).size.width,
               decoration: const BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(AppString.image),
+                  image: AssetImage(Assets.image),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -130,18 +131,18 @@ class _LoginPageState extends State<LoginPage> {
                         text: AppString.login,
                         color: Colors.grey.shade800,
                         fontColor: Colors.white,
-                        onTap: () {
+                        onTap: () async {
                           if (modal.loginKey.currentState!.validate()) {
-                            loginPostData(
-                              modal.loginEmailController.text,
-                              modal.loginPasswordController.text,
+                            modal.loginData();
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                builder: (context) => const ProductListing(),
+                              ),
                             );
-                            Navigator.of(context)
-                                .pushReplacementNamed('listing');
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text("Login Failed"),
+                                content: Text(AppString.failed),
                               ),
                             );
                           }
@@ -172,8 +173,11 @@ class _LoginPageState extends State<LoginPage> {
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    Navigator.of(context)
-                                        .pushReplacementNamed('signUp');
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (context) => const SignUp(),
+                                      ),
+                                    );
                                   },
                               ),
                             ],

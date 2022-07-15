@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_figma/ui/widget/textfield.dart';
+import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:provider/provider.dart';
 import '../../../../core/provider/providers.dart';
 import '../../../../utils/constant/app_string.dart';
@@ -16,11 +17,6 @@ class EditProfile extends StatefulWidget {
 
 class _EditProfileState extends State<EditProfile> {
   late DataClass modal;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   void didChangeDependencies() {
@@ -67,8 +63,8 @@ class _EditProfileState extends State<EditProfile> {
                           radius: 50,
                           backgroundImage:
                               (modal.profile?.user.gender == "FeMale")
-                                  ? const AssetImage(AppString.female)
-                                  : const AssetImage(AppString.male),
+                                  ? const AssetImage(Assets.female)
+                                  : const AssetImage(Assets.male),
                         ),
                       ),
                       Positioned(
