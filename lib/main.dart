@@ -1,34 +1,31 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:login_figma/core/provider/providers.dart';
+import 'package:login_figma/core/provider/login_provider.dart';
+import 'package:login_figma/core/provider/product_provider.dart';
+import 'package:login_figma/core/provider/sign_up_provider.dart';
+import 'package:login_figma/core/provider/user_provider.dart';
 import 'package:login_figma/ui/views/homepage.dart';
 import 'package:login_figma/ui/views/screens/login/login_screen.dart';
 import 'package:login_figma/ui/views/screens/login/signUp_screen.dart';
 import 'package:login_figma/ui/views/screens/product/add_product.dart';
 import 'package:login_figma/ui/views/screens/product/listing.dart';
 import 'package:login_figma/ui/views/screens/product/product_detail.dart';
+import 'package:login_figma/ui/views/screens/product/product_update.dart';
 import 'package:login_figma/ui/views/screens/profile/edit_profile.dart';
 import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/http_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  bool? status = prefs.getBool('status');
   runApp(
-    const Authenticate(),
-  );
-  HttpOverrides.global = MyHttpOverrides();
-}
-
-class Authenticate extends StatelessWidget {
-  const Authenticate({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return MultiProvider(
+    MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (context) => DataClass(),
+          create: (context) => LoginProvider(),
           child: const LoginPage(),
         ),
         ChangeNotifierProvider(
@@ -36,11 +33,11 @@ class Authenticate extends StatelessWidget {
           child: const SignUp(),
         ),
         ChangeNotifierProvider(
-          create: (context) => DataClass(),
+          create: (context) => UserProvider(),
           child: const EditProfile(),
         ),
         ChangeNotifierProvider(
-          create: (context) => DataClass(),
+          create: (context) => UserProvider(),
           child: const ProfilePage(),
         ),
         ChangeNotifierProvider(
@@ -48,16 +45,21 @@ class Authenticate extends StatelessWidget {
           child: const AddProducts(),
         ),
         ChangeNotifierProvider(
-          create: (context) => DataClass(),
+          create: (context) => ProductAddProvider(),
           child: const ProductDetail(),
         ),
         ChangeNotifierProvider(
           create: (context) => DataClass(),
           child: const ProductListing(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => DataClass(),
+          child: const ProductUpdate(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        initialRoute: (status == null) ? '/' : 'listing',
         routes: {
           '/': (context) => const HomePage(),
           'login': (context) => const LoginPage(),
@@ -67,8 +69,10 @@ class Authenticate extends StatelessWidget {
           'listing': (context) => const ProductListing(),
           'profile': (context) => const ProfilePage(),
           'edit': (context) => const EditProfile(),
+          'edit_product': (context) => const ProductUpdate(),
         },
       ),
-    );
-  }
+    ),
+  );
+  HttpOverrides.global = MyHttpOverrides();
 }

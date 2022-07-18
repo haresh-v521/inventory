@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_figma/ui/views/screens/product/product_update.dart';
 import 'package:login_figma/ui/widget/custom_color_pallat.dart';
 import 'package:login_figma/ui/widget/login_button.dart';
 import 'package:provider/provider.dart';
-import '../../../../core/provider/providers.dart';
+import '../../../../core/provider/sign_up_provider.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/custom_text.dart';
-import '../../../widget/textfield.dart';
 
 class ProductDetail extends StatefulWidget {
   const ProductDetail({Key? key}) : super(key: key);
@@ -17,22 +17,10 @@ class ProductDetail extends StatefulWidget {
 }
 
 class _ProductDetailState extends State<ProductDetail> {
-  late DataClass modal;
-  late dynamic res;
-
-  @override
-  void didChangeDependencies() {
-    modal = Provider.of<DataClass>(context);
-    res = ModalRoute.of(context)!.settings.arguments;
-    modal.pNameController.text = res[2];
-    modal.mrpController.text = res[1].toString();
-    modal.sellingController.text = res[5].toString();
-    modal.descController.text = res[4].toString();
-    super.didChangeDependencies();
-  }
-
   @override
   Widget build(BuildContext context) {
+    final modal = Provider.of<DataClass>(context);
+    dynamic res = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       extendBodyBehindAppBar: true,
@@ -90,6 +78,11 @@ class _ProductDetailState extends State<ProductDetail> {
             CustomText(
               color: Colors.grey.shade500,
               text: "Price : ${res[1]} \$",
+              size: 16,
+            ),
+            CustomText(
+              color: Colors.grey.shade500,
+              text: "Selling item : ${res[5]} Item",
               size: 16,
             ),
             CustomText(
@@ -173,90 +166,12 @@ class _ProductDetailState extends State<ProductDetail> {
               color: Colors.grey.shade800,
               fontColor: Colors.white,
               onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (context) {
-                    return Material(
-                      child: Form(
-                        key: modal.updateProductKey,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomInput(
-                              controller: modal.pNameController,
-                              type: TextInputType.name,
-                              text: "Product name",
-                              val: false,
-                              value: false,
-                              validator: (val) {
-                                if (val!.isEmpty) {
-                                  return "Please Enter Product name";
-                                }
-                                return null;
-                              },
-                            ),
-                            CustomInput(
-                              controller: modal.mrpController,
-                              text: "Product mrp",
-                              type: TextInputType.number,
-                              val: false,
-                              value: false,
-                              validator: (val) {
-                                if (val!.isEmpty) {
-                                  return "Please Enter Product Price";
-                                }
-                                return null;
-                              },
-                            ),
-                            CustomInput(
-                              controller: modal.sellingController,
-                              type: TextInputType.number,
-                              text: "Product selling item",
-                              val: false,
-                              value: false,
-                              validator: (val) {
-                                if (val!.isEmpty) {
-                                  return "Please Enter Product Selling item";
-                                }
-                                return null;
-                              },
-                            ),
-                            CustomInput(
-                              controller: modal.descController,
-                              text: "Product description",
-                              type: TextInputType.name,
-                              val: false,
-                              value: false,
-                              validator: (val) {
-                                if (val!.isEmpty) {
-                                  return "Please Enter Product Description";
-                                }
-                                return null;
-                              },
-                            ),
-                            CustomButton(
-                                onTap: () {
-                                  if (modal.updateProductKey.currentState!
-                                      .validate()) {
-                                    modal.updateProduct(res[3]);
-                                    Navigator.of(context).pop();
-                                  }
-                                },
-                                text: "UPDATE",
-                                color: Colors.grey.shade800,
-                                fontColor: Colors.white),
-                            CustomButton(
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                                text: "CANCEL",
-                                color: Colors.grey.shade800,
-                                fontColor: Colors.white)
-                          ],
-                        ),
-                      ),
-                    );
-                  },
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => ProductUpdate(
+                      res: res,
+                    ),
+                  ),
                 );
               },
             ),

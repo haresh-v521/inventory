@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:login_figma/core/provider/providers.dart';
+import 'package:login_figma/core/provider/user_provider.dart';
 import 'package:login_figma/ui/views/screens/login/login_screen.dart';
 import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
 import 'package:login_figma/ui/widget/login_button.dart';
 import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:provider/provider.dart';
+import '../../../../core/provider/product_provider.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/custom_product_list.dart';
 import '../../../widget/listtile.dart';
@@ -21,11 +22,13 @@ class ProductListing extends StatefulWidget {
 class _ProductListingState extends State<ProductListing> {
   int page = 21;
   ScrollController scrollController = ScrollController();
-  late DataClass modal;
+  late ProductAddProvider modal;
+  late UserProvider userModal;
 
   @override
   void didChangeDependencies() {
-    modal = Provider.of<DataClass>(context);
+    modal = Provider.of<ProductAddProvider>(context);
+    userModal = Provider.of<UserProvider>(context);
     super.didChangeDependencies();
   }
 
@@ -73,7 +76,7 @@ class _ProductListingState extends State<ProductListing> {
           actions: [
             IconButton(
               onPressed: () {
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const AddProducts(),
                   ),
@@ -94,7 +97,7 @@ class _ProductListingState extends State<ProductListing> {
               DrawerHeader(
                 child: CircleAvatar(
                   radius: 60,
-                  backgroundImage: (modal.profile?.user.gender == "FeMale")
+                  backgroundImage: (userModal.profile?.user.gender == "FeMale")
                       ? const AssetImage(Assets.female)
                       : const AssetImage(Assets.male),
                 ),
@@ -123,6 +126,18 @@ class _ProductListingState extends State<ProductListing> {
                   );
                 },
               ),
+              CustomListTile(
+                text: "Log Out",
+                icon: const Icon(Icons.logout),
+                color: Colors.transparent,
+                callback: () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const LoginPage(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
@@ -142,86 +157,100 @@ class _ProductListingState extends State<ProductListing> {
                 ),
               ),
             ),
-            Expanded(
-              child: (modal.isLoading)
-                  ? const Center(
-                      child: CircularProgressIndicator(),
-                    )
-                  : ListView.builder(
-                      controller: scrollController,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: modal.items.length,
-                      itemBuilder: (context, i) {
-                        return ProductList(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(
-                              'detail',
-                              arguments: [
-                                (modal.items[i].img == null)
-                                    ? Assets.noImage
-                                    : modal.items[i].img,
-                                modal.items[i].mrp,
-                                modal.items[i].name,
-                                modal.items[i].id,
-                                modal.items[i].description,
-                                modal.items[i].selling,
-                              ],
-                            );
-                          },
-                          image: Assets.playImg,
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    title: const Text(
-                                      AppString.delete,
-                                    ),
-                                    content: const Text(
-                                      AppString.record,
-                                    ),
-                                    actions: [
-                                      CustomButton(
-                                        onTap: () {
-                                          modal.delete(modal.items[i].id);
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(
-                                            const SnackBar(
-                                              backgroundColor: Colors.red,
-                                              behavior:
-                                                  SnackBarBehavior.floating,
-                                              content: Text(
-                                                "Product Deleted Successfully",
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        text: 'DELETE',
-                                        fontColor: Colors.white,
-                                        color: Colors.grey.shade800,
-                                      ),
-                                      CustomButton(
-                                        onTap: () {
-                                          Navigator.of(context).pop();
-                                        },
-                                        text: 'CANCEL',
-                                        border: Border.all(
-                                            color: Colors.grey.shade800),
-                                        fontColor: Colors.grey.shade800,
-                                        color: Colors.white,
-                                      ),
+            Consumer<ProductAddProvider>(
+              builder: (BuildContext context, modal, child) {
+                return Expanded(
+                  child: (modal.isLoading)
+                      ? const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      : ListView.builder(
+                          controller: scrollController,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: modal.items.length + 1,
+                          itemBuilder: (context, i) {
+                            if (i == modal.items.length) {
+                              return Center(
+                                child: CircularProgressIndicator(
+                                  color: Colors.grey.shade800,
+                                ),
+                              );
+                            } else {
+                              return ProductList(
+                                onTap: () {
+                                  Navigator.of(context).pushNamed(
+                                    'detail',
+                                    arguments: [
+                                      (modal.items[i].img == null)
+                                          ? Assets.noImage
+                                          : modal.items[i].img,
+                                      modal.items[i].mrp,
+                                      modal.items[i].name,
+                                      modal.items[i].id,
+                                      modal.items[i].description,
+                                      modal.items[i].selling,
                                     ],
                                   );
-                                });
+                                },
+                                image: Assets.playImg,
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title: const Text(
+                                            AppString.delete,
+                                          ),
+                                          content: const Text(
+                                            AppString.record,
+                                          ),
+                                          actions: [
+                                            CustomButton(
+                                              onTap: () {
+                                                setState(() {});
+                                                modal.delete(modal.items[i].id);
+                                                Navigator.of(context).pop();
+                                                ScaffoldMessenger.of(context)
+                                                    .showSnackBar(
+                                                  const SnackBar(
+                                                    backgroundColor: Colors.red,
+                                                    behavior: SnackBarBehavior
+                                                        .floating,
+                                                    content: Text(
+                                                      "Product Deleted Successfully",
+                                                    ),
+                                                  ),
+                                                );
+                                              },
+                                              text: 'DELETE',
+                                              fontColor: Colors.white,
+                                              color: Colors.grey.shade800,
+                                            ),
+                                            CustomButton(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              text: 'CANCEL',
+                                              border: Border.all(
+                                                  color: Colors.grey.shade800),
+                                              fontColor: Colors.grey.shade800,
+                                              color: Colors.white,
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                bluImage: (modal.items[i].img == null)
+                                    ? Assets.noImage
+                                    : "${modal.items[i].img}",
+                                price: "Price : ${modal.items[i].mrp}",
+                                bluText: modal.items[i].name.toUpperCase(),
+                              );
+                            }
                           },
-                          bluImage: (modal.items[i].img == null)
-                              ? Assets.noImage
-                              : "${modal.items[i].img}",
-                          price: "Price : ${modal.items[i].mrp}",
-                          bluText: modal.items[i].name.toUpperCase(),
-                        );
-                      },
-                    ),
+                        ),
+                );
+              },
             ),
           ],
         ),

@@ -5,12 +5,13 @@ class CustomListTile extends StatelessWidget {
   final String text;
   final VoidCallback callback;
   final Widget icon;
-  final Color color ;
+  final Color color;
   const CustomListTile(
       {Key? key,
       required this.text,
       required this.callback,
-      required this.icon, required this.color})
+      required this.icon,
+      required this.color})
       : super(key: key);
 
   @override
@@ -18,7 +19,7 @@ class CustomListTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8),
       child: GestureDetector(
-        onTap: (){},
+        onTap: callback,
         child: Container(
           width: MediaQuery.of(context).size.width,
           padding: const EdgeInsets.only(top: 6, bottom: 6),
@@ -39,7 +40,7 @@ class CustomListTile extends StatelessWidget {
                 ),
               ),
             ),
-            trailing: IconButton(onPressed: callback, icon: icon),
+            trailing: IconButton(onPressed: () {}, icon: icon),
           ),
         ),
       ),

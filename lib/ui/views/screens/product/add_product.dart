@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:login_figma/core/provider/product_provider.dart';
 import 'package:provider/provider.dart';
-import '../../../../core/provider/providers.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
@@ -11,7 +11,7 @@ class AddProducts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final modal = Provider.of<DataClass>(context);
+    final modal = Provider.of<ProductAddProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,

@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:login_figma/core/provider/login_provider.dart';
 import 'package:login_figma/ui/views/screens/login/signUp_screen.dart';
 import 'package:login_figma/ui/views/screens/product/listing.dart';
 import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:provider/provider.dart';
-import '../../../../core/provider/providers.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
@@ -20,7 +20,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(context) {
-    final modal = Provider.of<DataClass>(context);
+    final modal = Provider.of<LoginProvider>(context);
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -112,7 +112,10 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
-                            right: 14, top: 15, bottom: 20),
+                          right: 14,
+                          top: 15,
+                          bottom: 20,
+                        ),
                         child: Align(
                           alignment: Alignment.centerRight,
                           child: Text(
@@ -131,9 +134,11 @@ class _LoginPageState extends State<LoginPage> {
                         text: AppString.login,
                         color: Colors.grey.shade800,
                         fontColor: Colors.white,
-                        onTap: () async {
+                        onTap: () {
                           if (modal.loginKey.currentState!.validate()) {
-                            modal.loginData();
+                            modal.loginData(context);
+                            modal.loginEmailController.clear();
+                            modal.loginPasswordController.clear();
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => const ProductListing(),

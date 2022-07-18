@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:login_figma/ui/views/screens/login/login_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../core/provider/providers.dart';
+import '../../../../core/provider/sign_up_provider.dart';
 import '../../../../utils/constant/app_assets.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/login_button.dart';
@@ -121,7 +121,7 @@ class _SignUpState extends State<SignUp> {
                         validator: (String? val) {
                           if (val!.isEmpty) {
                             return "Please Enter your password";
-                          } else if (val.length > 6) {
+                          } else if (val.length < 6) {
                             return "Password must be at least 6 character long";
                           }
                           return null;
@@ -187,17 +187,10 @@ class _SignUpState extends State<SignUp> {
                         fontColor: Colors.white,
                         onTap: () async {
                           if (modal.key.currentState!.validate()) {
-                            modal.postData();
+                            modal.postData(context);
                             Navigator.of(context).pushReplacement(
                               MaterialPageRoute(
                                 builder: (context) => const ProductListing(),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content:
-                                    Text("Sign in failed? Please try again"),
                               ),
                             );
                           }

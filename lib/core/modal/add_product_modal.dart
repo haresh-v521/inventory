@@ -6,26 +6,21 @@ String addToJson(Add data) => json.encode(data.toJson());
 
 class Add {
   Add({
-    required this.status,
     required this.message,
     required this.data,
   });
-
-  int status;
   String message;
-  Data data;
+  Data? data;
 
   factory Add.fromJson(Map<String, dynamic> json) => Add(
-    status: json["status"],
-    message: json["message"],
-    data: Data.fromJson(json["data"]),
-  );
+        message: json["message"],
+        data: Data.fromJson(json["data"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "status": status,
-    "message": message,
-    "data": data.toJson(),
-  };
+        "message": message,
+        "data": data?.toJson(),
+      };
 }
 
 class Data {
@@ -45,33 +40,33 @@ class Data {
   String mrp;
   String selling;
   String description;
-  String image;
+  String? image;
   DateTime updatedAt;
   DateTime createdAt;
   int id;
-  String img;
+  String? img;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    name: json["name"],
-    mrp: json["mrp"],
-    selling: json["selling"],
-    description: json["description"],
-    image: json["image"],
-    updatedAt: DateTime.parse(json["updated_at"]),
-    createdAt: DateTime.parse(json["created_at"]),
-    id: json["id"],
-    img: json["img"],
-  );
+        name: json["name"],
+        mrp: json["mrp"],
+        selling: json["selling"],
+        description: json["description"],
+        image: json["image"],
+        updatedAt: DateTime.parse(json["updated_at"]),
+        createdAt: DateTime.parse(json["created_at"]),
+        id: json["id"],
+        img: json["img"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "mrp": mrp,
-    "selling": selling,
-    "description": description,
-    "image": image,
-    "updated_at": updatedAt.toIso8601String(),
-    "created_at": createdAt.toIso8601String(),
-    "id": id,
-    "img": img,
-  };
+        "name": name,
+        "mrp": mrp,
+        "selling": selling,
+        "description": description,
+        "image": image,
+        "updated_at": updatedAt.toIso8601String(),
+        "created_at": createdAt.toIso8601String(),
+        "id": id,
+        "img": img,
+      };
 }
