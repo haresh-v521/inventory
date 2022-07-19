@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:login_figma/core/modal/list_product_modal.dart';
 import 'dart:io';
 import '../modal/register_post_data_modal.dart';
-import '../services/http_service.dart';
+import '../services/sign_up_service.dart';
 
 class DataClass extends ChangeNotifier {
   GlobalKey<FormState> key = GlobalKey<FormState>();
@@ -64,16 +64,15 @@ class DataClass extends ChangeNotifier {
   postData(context) async {
     isLoading = true;
     post = await registerPostData(
-      nameController.text,
-      emailController.text,
-      int.parse(
-        passwordController.text,
-      ),
-      dateController.text,
-      dropSelectedValue,
-      confirmPasswordController.text,
-      context,
-    );
+        nameController.text,
+        emailController.text,
+        int.parse(
+          passwordController.text,
+        ),
+        dateController.text,
+        dropSelectedValue,
+        confirmPasswordController.text,
+        context);
     isLoading = false;
     notifyListeners();
   }

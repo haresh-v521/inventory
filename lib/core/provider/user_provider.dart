@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../modal/profile_update_modal.dart';
 import '../modal/user_profile_modal.dart';
-import '../services/http_service.dart';
+import '../services/get_user_service.dart';
+import '../services/profile_update_service.dart';
 
 class UserProvider extends ChangeNotifier {
   bool isLoading = true;

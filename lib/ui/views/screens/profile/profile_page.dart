@@ -37,8 +37,10 @@ class _ProfilePageState extends State<ProfilePage> {
             backgroundColor: Colors.grey.shade800,
           ),
           body: (modal.isLoading)
-              ? const Center(
-                  child: CircularProgressIndicator(),
+              ? Center(
+                  child: CircularProgressIndicator(
+                    color: Colors.grey.shade800,
+                  ),
                 )
               : SingleChildScrollView(
                   child: Column(

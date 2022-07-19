@@ -6,6 +6,7 @@ import '../../../widget/textfield.dart';
 
 class ProductUpdate extends StatefulWidget {
   final dynamic res;
+
   const ProductUpdate({Key? key, this.res}) : super(key: key);
 
   @override
@@ -14,7 +15,6 @@ class ProductUpdate extends StatefulWidget {
 
 class _ProductUpdateState extends State<ProductUpdate> {
   late ProductAddProvider modal;
-  int page = 21;
 
   @override
   void didChangeDependencies() {
@@ -34,6 +34,12 @@ class _ProductUpdateState extends State<ProductUpdate> {
     return Consumer<ProductAddProvider>(
       builder: (BuildContext context, modal, child) {
         return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.grey.shade800,
+            elevation: 0,
+            title: const Text("Product Update"),
+            centerTitle: true,
+          ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -90,22 +96,22 @@ class _ProductUpdateState extends State<ProductUpdate> {
                 },
               ),
               CustomButton(
-                  onTap: () async {
-                    setState(() {
-                      modal.updateProduct(widget.res[3]);
-                    });
-                    Navigator.of(context).pushNamed('listing');
-                  },
-                  text: "UPDATE",
-                  color: Colors.grey.shade800,
-                  fontColor: Colors.white),
+                onTap: () async {
+                  modal.updateProduct(widget.res[3]);
+                  Navigator.of(context).pushNamed('listing');
+                },
+                text: "UPDATE",
+                color: Colors.grey.shade800,
+                fontColor: Colors.white,
+              ),
               CustomButton(
-                  onTap: () {
-                    Navigator.of(context).pop();
-                  },
-                  text: "CANCEL",
-                  color: Colors.grey.shade800,
-                  fontColor: Colors.white)
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                text: "CANCEL",
+                color: Colors.grey.shade800,
+                fontColor: Colors.white,
+              ),
             ],
           ),
         );

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-
+import 'package:fluttertoast/fluttertoast.dart';
+import '../../ui/views/screens/product/listing.dart';
+import '../../utils/constant/app_string.dart';
 import '../modal/login_post_data_modal.dart';
-import '../services/http_service.dart';
+import '../services/login_service.dart';
 
 class LoginProvider extends ChangeNotifier {
   GlobalKey<FormState> loginKey = GlobalKey<FormState>();
@@ -13,11 +15,29 @@ class LoginProvider extends ChangeNotifier {
   loginData(context) async {
     isLoading = true;
     user = await loginPostData(
-      loginEmailController.text,
-      loginPasswordController.text,
-      context,
-    );
+        loginEmailController.text, loginPasswordController.text, context);
     isLoading = false;
     notifyListeners();
+  }
+
+  onLogin(context) async {
+    if (loginKey.currentState!.validate()) {
+      await loginData(context);
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ProductListing(),
+        ),
+      );
+    } else {
+      Fluttertoast.showToast(
+        msg: AppString.failed,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+        fontSize: 16.0,
+      );
+    }
   }
 }

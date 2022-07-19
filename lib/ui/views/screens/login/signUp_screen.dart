@@ -193,6 +193,15 @@ class _SignUpState extends State<SignUp> {
                                 builder: (context) => const ProductListing(),
                               ),
                             );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.red,
+                                content:
+                                    Text("Please Fill All Required details"),
+                              ),
+                            );
                           }
                         },
                       ),

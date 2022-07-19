@@ -69,19 +69,16 @@ class _EditProfileState extends State<EditProfile> {
                                       : const AssetImage(Assets.male),
                             ),
                           ),
-                          Positioned(
+                          const Positioned(
                             bottom: 6,
                             right: 0,
                             child: CircleAvatar(
                               radius: 16,
                               backgroundColor: Colors.white,
-                              child: IconButton(
-                                icon: const Icon(
-                                  Icons.edit,
-                                  size: 18,
-                                  color: Colors.black,
-                                ),
-                                onPressed: () {},
+                              child: Icon(
+                                Icons.edit,
+                                size: 18,
+                                color: Colors.black,
                               ),
                             ),
                           ),
@@ -102,9 +99,10 @@ class _EditProfileState extends State<EditProfile> {
                         child: Text(
                           "${modal.profile?.user.email}",
                           style: GoogleFonts.marmelad(
-                              color: Colors.white,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ),
                     ],
@@ -173,7 +171,6 @@ class _EditProfileState extends State<EditProfile> {
                   color: Colors.grey.shade800,
                   fontColor: Colors.white,
                   onTap: () {
-                    setState(() {});
                     modal.updateProfile();
                     modal.userResponse();
                     Navigator.of(context).pop();

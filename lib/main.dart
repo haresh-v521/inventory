@@ -15,7 +15,7 @@ import 'package:login_figma/ui/views/screens/profile/edit_profile.dart';
 import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'core/services/http_service.dart';
+import 'core/services/sign_up_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_figma/core/provider/login_provider.dart';
 import 'package:login_figma/ui/views/screens/login/signUp_screen.dart';
-import 'package:login_figma/ui/views/screens/product/listing.dart';
 import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:provider/provider.dart';
 import '../../../../utils/constant/app_string.dart';
@@ -134,23 +133,8 @@ class _LoginPageState extends State<LoginPage> {
                         text: AppString.login,
                         color: Colors.grey.shade800,
                         fontColor: Colors.white,
-                        onTap: () {
-                          if (modal.loginKey.currentState!.validate()) {
-                            modal.loginData(context);
-                            modal.loginEmailController.clear();
-                            modal.loginPasswordController.clear();
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (context) => const ProductListing(),
-                              ),
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text(AppString.failed),
-                              ),
-                            );
-                          }
+                        onTap: () async {
+                          await modal.onLogin(context);
                         },
                       ),
                       Padding(

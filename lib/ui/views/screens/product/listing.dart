@@ -161,8 +161,10 @@ class _ProductListingState extends State<ProductListing> {
               builder: (BuildContext context, modal, child) {
                 return Expanded(
                   child: (modal.isLoading)
-                      ? const Center(
-                          child: CircularProgressIndicator(),
+                      ? Center(
+                          child: CircularProgressIndicator(
+                            color: Colors.grey.shade800,
+                          ),
                         )
                       : ListView.builder(
                           controller: scrollController,
@@ -171,8 +173,12 @@ class _ProductListingState extends State<ProductListing> {
                           itemBuilder: (context, i) {
                             if (i == modal.items.length) {
                               return Center(
-                                child: CircularProgressIndicator(
-                                  color: Colors.grey.shade800,
+                                child: Opacity(
+                                  opacity: 0.7,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.grey.shade800,
+                                    strokeWidth: 1.5,
+                                  ),
                                 ),
                               );
                             } else {
@@ -207,8 +213,8 @@ class _ProductListingState extends State<ProductListing> {
                                           actions: [
                                             CustomButton(
                                               onTap: () {
-                                                setState(() {});
                                                 modal.delete(modal.items[i].id);
+                                                modal.items.removeAt(i);
                                                 Navigator.of(context).pop();
                                                 ScaffoldMessenger.of(context)
                                                     .showSnackBar(

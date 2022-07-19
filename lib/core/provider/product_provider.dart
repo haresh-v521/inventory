@@ -6,7 +6,10 @@ import 'package:image_picker/image_picker.dart';
 import '../modal/add_product_modal.dart';
 import '../modal/list_product_modal.dart';
 import '../modal/product_update_modal.dart';
-import '../services/http_service.dart';
+import '../services/add_product_service.dart';
+import '../services/pagination_service.dart';
+import '../services/product_delete_service.dart';
+import '../services/product_update_service.dart';
 
 class ProductAddProvider extends ChangeNotifier {
   GlobalKey<FormState> productKey = GlobalKey<FormState>();
@@ -63,7 +66,7 @@ class ProductAddProvider extends ChangeNotifier {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text("Choose"),
+          title: const Text("Choose picture from Camera or Gallery"),
           actions: [
             IconButton(
               onPressed: () {
