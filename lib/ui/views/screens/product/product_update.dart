@@ -6,7 +6,6 @@ import '../../../widget/textfield.dart';
 
 class ProductUpdate extends StatefulWidget {
   final dynamic res;
-
   const ProductUpdate({Key? key, this.res}) : super(key: key);
 
   @override
@@ -19,7 +18,6 @@ class _ProductUpdateState extends State<ProductUpdate> {
   @override
   void didChangeDependencies() {
     modal = Provider.of<ProductAddProvider>(context);
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       modal.pNameController.text = widget.res[2];
       modal.mrpController.text = widget.res[1].toString();

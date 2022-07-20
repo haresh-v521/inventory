@@ -26,7 +26,7 @@ class AppString {
   static const String rating = "Ratings";
   static const String dob = "DOB";
   static const String barTitle = "Add Products";
-  static const String failed = " please enter correct email or password";
+  static const String failed = " please Fill requirement details";
   static const String record =
       "This Item is permanently delete from your record";
   static const String delete = "Are You sure Want to delete ?";

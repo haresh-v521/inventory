@@ -19,7 +19,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(context) {
-    final modal = Provider.of<LoginProvider>(context);
     return SafeArea(
       child: Scaffold(
         extendBodyBehindAppBar: true,
@@ -27,158 +26,163 @@ class _LoginPageState extends State<LoginPage> {
           backgroundColor: Colors.transparent,
           elevation: 0,
         ),
-        body: Stack(
-          children: [
-            Container(
-              padding: const EdgeInsets.only(top: 83, left: 26),
-              alignment: Alignment.topLeft,
-              height: MediaQuery.of(context).size.height / 1.5,
-              width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage(Assets.image),
-                  fit: BoxFit.cover,
-                ),
-              ),
-              child: Text(
-                AppString.back,
-                style: GoogleFonts.marmelad(
-                  textStyle: const TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.white,
+        body: Consumer<LoginProvider>(
+          builder: (context, modal, child) {
+            return Stack(
+              children: [
+                Container(
+                  padding: const EdgeInsets.only(top: 83, left: 26),
+                  alignment: Alignment.topLeft,
+                  height: MediaQuery.of(context).size.height / 1.5,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage(Assets.image),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  child: Text(
+                    AppString.back,
+                    style: GoogleFonts.marmelad(
+                      textStyle: const TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                alignment: Alignment.bottomCenter,
-                height: MediaQuery.of(context).size.height / 1.9,
-                width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(60),
-                    topRight: Radius.circular(60),
-                  ),
-                ),
-                child: Form(
-                  key: modal.loginKey,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 14),
-                        child: Text(
-                          AppString.log,
-                          style: GoogleFonts.marmelad(
-                            textStyle: TextStyle(
-                              color: Colors.grey.shade800,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    alignment: Alignment.bottomCenter,
+                    height: MediaQuery.of(context).size.height / 1.9,
+                    width: MediaQuery.of(context).size.width,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(60),
+                        topRight: Radius.circular(60),
                       ),
-                      CustomInput(
-                        controller: modal.loginEmailController,
-                        text: AppString.email,
-                        type: TextInputType.emailAddress,
-                        val: false,
-                        value: false,
-                        validator: (String? val) {
-                          if (val!.isEmpty) {
-                            return "Please Enter Valid Email";
-                          }
-                          return null;
-                        },
-                      ),
-                      CustomInput(
-                        controller: modal.loginPasswordController,
-                        text: AppString.pass,
-                        type: const TextInputType.numberWithOptions(),
-                        val: true,
-                        value: false,
-                        validator: (String? val) {
-                          if (val!.isEmpty) {
-                            return "Please Enter your password";
-                          } else if (val.length < 6) {
-                            return "Password must be at least 6 character long";
-                          }
-                          return null;
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          right: 14,
-                          top: 15,
-                          bottom: 20,
-                        ),
-                        child: Align(
-                          alignment: Alignment.centerRight,
-                          child: Text(
-                            AppString.forget,
-                            style: GoogleFonts.marmelad(
-                              textStyle: TextStyle(
-                                fontWeight: FontWeight.w400,
-                                color: Colors.grey.shade800,
-                                fontSize: 14,
+                    ),
+                    child: Form(
+                      key: modal.loginKey,
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.only(top: 14),
+                            child: Text(
+                              AppString.log,
+                              style: GoogleFonts.marmelad(
+                                textStyle: TextStyle(
+                                  color: Colors.grey.shade800,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w400,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ),
-                      CustomButton(
-                        text: AppString.login,
-                        color: Colors.grey.shade800,
-                        fontColor: Colors.white,
-                        onTap: () async {
-                          await modal.onLogin(context);
-                        },
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20),
-                        child: RichText(
-                          text: TextSpan(
-                            text: AppString.don,
-                            style: GoogleFonts.marmelad(
-                              textStyle: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w400,
-                                color: Colors.grey.shade800,
-                              ),
+                          CustomInput(
+                            controller: modal.loginEmailController,
+                            text: AppString.email,
+                            type: TextInputType.emailAddress,
+                            val: false,
+                            value: false,
+                            validator: (String? val) {
+                              if (val!.isEmpty) {
+                                return "Please Enter Valid Email";
+                              }
+                              return null;
+                            },
+                          ),
+                          CustomInput(
+                            controller: modal.loginPasswordController,
+                            text: AppString.pass,
+                            type: const TextInputType.numberWithOptions(),
+                            val: true,
+                            value: false,
+                            validator: (String? val) {
+                              if (val!.isEmpty) {
+                                return "Please Enter your password";
+                              } else if (val.length < 6) {
+                                return "Password must be at least 6 character long";
+                              }
+                              return null;
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                              right: 14,
+                              top: 15,
+                              bottom: 20,
                             ),
-                            children: [
-                              TextSpan(
-                                text: AppString.sign,
+                            child: Align(
+                              alignment: Alignment.centerRight,
+                              child: Text(
+                                AppString.forget,
                                 style: GoogleFonts.marmelad(
-                                  textStyle: const TextStyle(
-                                    decoration: TextDecoration.underline,
+                                  textStyle: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey.shade800,
                                     fontSize: 14,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.orange,
                                   ),
                                 ),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) => const SignUp(),
-                                      ),
-                                    );
-                                  },
                               ),
-                            ],
+                            ),
                           ),
-                        ),
+                          CustomButton(
+                            text: AppString.login,
+                            color: Colors.grey.shade800,
+                            fontColor: Colors.white,
+                            onTap: () async {
+                              await modal.onLogin(context);
+                            },
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: RichText(
+                              text: TextSpan(
+                                text: AppString.don,
+                                style: GoogleFonts.marmelad(
+                                  textStyle: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey.shade800,
+                                  ),
+                                ),
+                                children: [
+                                  TextSpan(
+                                    text: AppString.sign,
+                                    style: GoogleFonts.marmelad(
+                                      textStyle: const TextStyle(
+                                        decoration: TextDecoration.underline,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.orange,
+                                      ),
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        Navigator.of(context).pushReplacement(
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const SignUp(),
+                                          ),
+                                        );
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ],
+              ],
+            );
+          },
         ),
       ),
     );

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../../ui/views/screens/product/listing.dart';
+import 'package:login_figma/ui/views/screens/splash_login.dart';
 import '../../utils/constant/app_string.dart';
 import '../modal/login_post_data_modal.dart';
 import '../services/login_service.dart';
@@ -25,7 +25,7 @@ class LoginProvider extends ChangeNotifier {
       await loginData(context);
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (context) => const ProductListing(),
+          builder: (context) => const SPlash(),
         ),
       );
     } else {

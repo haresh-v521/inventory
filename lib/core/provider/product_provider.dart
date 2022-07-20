@@ -46,7 +46,6 @@ class ProductAddProvider extends ChangeNotifier {
       desController.text,
       img!,
     );
-    items.addAll(list!.data.data);
     notifyListeners();
   }
 
@@ -94,9 +93,9 @@ class ProductAddProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  listResponse(int page) async {
+  listResponse(int page, context) async {
     isLoading = true;
-    list = await getProduct(page);
+    list = await getProduct(page, context);
     items.addAll(list!.data.data);
     isLoading = false;
     notifyListeners();

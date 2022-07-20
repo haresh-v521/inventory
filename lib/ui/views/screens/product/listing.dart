@@ -10,6 +10,7 @@ import '../../../../core/provider/product_provider.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/custom_product_list.dart';
 import '../../../widget/listtile.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'add_product.dart';
 
 class ProductListing extends StatefulWidget {
@@ -20,10 +21,11 @@ class ProductListing extends StatefulWidget {
 }
 
 class _ProductListingState extends State<ProductListing> {
-  int page = 21;
-  ScrollController scrollController = ScrollController();
   late ProductAddProvider modal;
   late UserProvider userModal;
+
+  int page = 21;
+  ScrollController scrollController = ScrollController();
 
   @override
   void didChangeDependencies() {
@@ -34,13 +36,13 @@ class _ProductListingState extends State<ProductListing> {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      modal.listResponse(page);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      modal.listResponse(page, context);
       scrollController.addListener(() {
         if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent) {
           if (page <= modal.list!.data.lastPage) {
-            modal.listResponse(page += 1);
+            modal.listResponse(page += 1, context);
           } else {
             return;
           }
@@ -162,7 +164,8 @@ class _ProductListingState extends State<ProductListing> {
                 return Expanded(
                   child: (modal.isLoading)
                       ? Center(
-                          child: CircularProgressIndicator(
+                          child: LoadingAnimationWidget.fourRotatingDots(
+                            size: 200,
                             color: Colors.grey.shade800,
                           ),
                         )
@@ -170,87 +173,115 @@ class _ProductListingState extends State<ProductListing> {
                           controller: scrollController,
                           physics: const BouncingScrollPhysics(),
                           itemCount: modal.items.length + 1,
-                          itemBuilder: (context, i) {
-                            if (i == modal.items.length) {
+                          itemBuilder: (context, index) {
+                            if (index == modal.items.length) {
                               return Center(
                                 child: Opacity(
                                   opacity: 0.7,
-                                  child: CircularProgressIndicator(
+                                  child:
+                                      LoadingAnimationWidget.staggeredDotsWave(
+                                    size: 100,
                                     color: Colors.grey.shade800,
-                                    strokeWidth: 1.5,
                                   ),
                                 ),
                               );
                             } else {
-                              return ProductList(
-                                onTap: () {
-                                  Navigator.of(context).pushNamed(
-                                    'detail',
-                                    arguments: [
-                                      (modal.items[i].img == null)
-                                          ? Assets.noImage
-                                          : modal.items[i].img,
-                                      modal.items[i].mrp,
-                                      modal.items[i].name,
-                                      modal.items[i].id,
-                                      modal.items[i].description,
-                                      modal.items[i].selling,
-                                    ],
-                                  );
-                                },
-                                image: Assets.playImg,
-                                onPressed: () {
-                                  showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return AlertDialog(
-                                          title: const Text(
-                                            AppString.delete,
-                                          ),
-                                          content: const Text(
-                                            AppString.record,
-                                          ),
-                                          actions: [
-                                            CustomButton(
-                                              onTap: () {
-                                                modal.delete(modal.items[i].id);
-                                                modal.items.removeAt(i);
-                                                Navigator.of(context).pop();
-                                                ScaffoldMessenger.of(context)
-                                                    .showSnackBar(
-                                                  const SnackBar(
-                                                    backgroundColor: Colors.red,
-                                                    behavior: SnackBarBehavior
-                                                        .floating,
-                                                    content: Text(
-                                                      "Product Deleted Successfully",
-                                                    ),
-                                                  ),
-                                                );
-                                              },
-                                              text: 'DELETE',
-                                              fontColor: Colors.white,
-                                              color: Colors.grey.shade800,
-                                            ),
-                                            CustomButton(
-                                              onTap: () {
-                                                Navigator.of(context).pop();
-                                              },
-                                              text: 'CANCEL',
-                                              border: Border.all(
-                                                  color: Colors.grey.shade800),
-                                              fontColor: Colors.grey.shade800,
-                                              color: Colors.white,
-                                            ),
+                              return TweenAnimationBuilder(
+                                tween: Tween<Offset>(
+                                  begin: (index.isEven)
+                                      ? const Offset(300, 0)
+                                      : const Offset(0, -300),
+                                  end: const Offset(0, 0),
+                                ),
+                                builder: (BuildContext context, Offset val,
+                                    Widget? child) {
+                                  return Transform.translate(
+                                    offset: val,
+                                    child: ProductList(
+                                      onTap: () {
+                                        Navigator.of(context).pushNamed(
+                                          'detail',
+                                          arguments: [
+                                            (modal.items[index].img == null)
+                                                ? Assets.noImage
+                                                : modal.items[index].img,
+                                            modal.items[index].mrp,
+                                            modal.items[index].name,
+                                            modal.items[index].id,
+                                            modal.items[index].description,
+                                            modal.items[index].selling,
                                           ],
                                         );
-                                      });
+                                      },
+                                      image: Assets.playImg,
+                                      onPressed: () {
+                                        showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return AlertDialog(
+                                                title: const Text(
+                                                  AppString.delete,
+                                                ),
+                                                content: const Text(
+                                                  AppString.record,
+                                                ),
+                                                actions: [
+                                                  CustomButton(
+                                                    onTap: () {
+                                                      modal.delete(modal
+                                                          .items[index].id);
+                                                      modal.items
+                                                          .removeAt(index);
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                      ScaffoldMessenger.of(
+                                                              context)
+                                                          .showSnackBar(
+                                                        const SnackBar(
+                                                          backgroundColor:
+                                                              Colors.red,
+                                                          behavior:
+                                                              SnackBarBehavior
+                                                                  .floating,
+                                                          content: Text(
+                                                            "Product Deleted Successfully",
+                                                          ),
+                                                        ),
+                                                      );
+                                                    },
+                                                    text: 'DELETE',
+                                                    fontColor: Colors.white,
+                                                    color: Colors.grey.shade800,
+                                                  ),
+                                                  CustomButton(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    text: 'CANCEL',
+                                                    border: Border.all(
+                                                        color: Colors
+                                                            .grey.shade800),
+                                                    fontColor:
+                                                        Colors.grey.shade800,
+                                                    color: Colors.white,
+                                                  ),
+                                                ],
+                                              );
+                                            });
+                                      },
+                                      bluImage: (modal.items[index].img == null)
+                                          ? Assets.noImage
+                                          : "${modal.items[index].img}",
+                                      price:
+                                          "Price : ${modal.items[index].mrp}",
+                                      bluText:
+                                          modal.items[index].name.toUpperCase(),
+                                    ),
+                                  );
                                 },
-                                bluImage: (modal.items[i].img == null)
-                                    ? Assets.noImage
-                                    : "${modal.items[i].img}",
-                                price: "Price : ${modal.items[i].mrp}",
-                                bluText: modal.items[i].name.toUpperCase(),
+                                duration: const Duration(seconds: 2),
+                                curve: Curves.easeInOut,
                               );
                             }
                           },

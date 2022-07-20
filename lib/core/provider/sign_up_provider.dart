@@ -15,7 +15,7 @@ class DataClass extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
   TextEditingController confirmPasswordController = TextEditingController();
 
-  dynamic dropSelectedValue = "";
+  dynamic dropSelectedValue;
   bool isLoading = true;
   Listing? list;
   PostData? post;
