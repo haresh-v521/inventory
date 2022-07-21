@@ -46,7 +46,11 @@ class _SplashSignUpState extends State<SplashSignUp> {
             AnimatedTextKit(
               animatedTexts: [
                 WavyAnimatedText(
-                  'Login Success',
+                  'Registered',
+                  textStyle: colorizeTextStyle,
+                ),
+                WavyAnimatedText(
+                  'Success',
                   textStyle: colorizeTextStyle,
                 ),
               ],

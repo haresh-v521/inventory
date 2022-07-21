@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_figma/ui/views/screens/login/login_screen.dart';
-import 'package:login_figma/ui/views/screens/login/signUp_screen.dart';
+import 'package:login_figma/ui/views/screens/login/signup_screen.dart';
 import 'package:login_figma/utils/constant/app_assets.dart';
 
 import '../../utils/constant/app_string.dart';

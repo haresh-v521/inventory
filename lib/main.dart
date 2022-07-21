@@ -6,21 +6,19 @@ import 'package:login_figma/core/provider/sign_up_provider.dart';
 import 'package:login_figma/core/provider/user_provider.dart';
 import 'package:login_figma/ui/views/homepage.dart';
 import 'package:login_figma/ui/views/screens/login/login_screen.dart';
-import 'package:login_figma/ui/views/screens/login/signUp_screen.dart';
+import 'package:login_figma/ui/views/screens/login/signup_screen.dart';
 import 'package:login_figma/ui/views/screens/product/add_product.dart';
 import 'package:login_figma/ui/views/screens/product/listing.dart';
 import 'package:login_figma/ui/views/screens/product/product_detail.dart';
 import 'package:login_figma/ui/views/screens/product/product_update.dart';
 import 'package:login_figma/ui/views/screens/profile/edit_profile.dart';
 import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
+import 'package:login_figma/ui/views/screens/splash/main_splash.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'core/services/sign_up_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final SharedPreferences prefs = await SharedPreferences.getInstance();
-  bool? status = prefs.getBool('status');
   runApp(
     MultiProvider(
       providers: [
@@ -59,9 +57,10 @@ void main() async {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        initialRoute: (status == null) ? '/' : 'listing',
+        initialRoute: 'splash',
         routes: {
           '/': (context) => const HomePage(),
+          'splash': (context) => const MainSplash(),
           'login': (context) => const LoginPage(),
           'signUp': (context) => const SignUp(),
           'addProduct': (context) => const AddProducts(),

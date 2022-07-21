@@ -8,7 +8,7 @@ import '../../../../utils/constant/app_assets.dart';
 import '../../../../utils/constant/app_string.dart';
 import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
-import '../splash_signup.dart';
+import '../splash/splash_signup.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);

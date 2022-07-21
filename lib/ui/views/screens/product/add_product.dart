@@ -114,7 +114,7 @@ class AddProducts extends StatelessWidget {
                       fontColor: Colors.white,
                       onTap: () {
                         if (modal.productKey.currentState!.validate()) {
-                          modal.addProduct();
+                          modal.addProduct(context);
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => const ProductListing(),

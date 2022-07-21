@@ -62,13 +62,14 @@ class _ProductDetailState extends State<ProductDetail> {
                   child: Align(
                     alignment: Alignment.center,
                     child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
-                        child: Image.network(
-                          "${res[0]}",
-                          height: 250,
-                          width: 250,
-                          fit: BoxFit.cover,
-                        )),
+                      borderRadius: BorderRadius.circular(15),
+                      child: Image.network(
+                        "${res[0]}",
+                        height: 250,
+                        width: 250,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
                 CustomText(

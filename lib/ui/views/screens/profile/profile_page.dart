@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:login_figma/core/provider/user_provider.dart';
 import 'package:login_figma/ui/views/screens/profile/edit_profile.dart';
 import 'package:login_figma/utils/constant/app_assets.dart';
@@ -38,7 +39,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           body: (modal.isLoading)
               ? Center(
-                  child: CircularProgressIndicator(
+                  child: LoadingAnimationWidget.fourRotatingDots(
+                    size: 200,
                     color: Colors.grey.shade800,
                   ),
                 )

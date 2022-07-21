@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:login_figma/ui/views/screens/splash_login.dart';
+import '../../ui/views/screens/splash/splash_login.dart';
 import '../../utils/constant/app_string.dart';
 import '../modal/login_post_data_modal.dart';
 import '../services/login_service.dart';

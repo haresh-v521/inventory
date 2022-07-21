@@ -24,7 +24,7 @@ class _ProductListingState extends State<ProductListing> {
   late ProductAddProvider modal;
   late UserProvider userModal;
 
-  int page = 21;
+  int page = 1;
   ScrollController scrollController = ScrollController();
 
   @override

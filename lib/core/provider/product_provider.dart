@@ -1,8 +1,6 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-
 import '../modal/add_product_modal.dart';
 import '../modal/list_product_modal.dart';
 import '../modal/product_update_modal.dart';
@@ -38,14 +36,14 @@ class ProductAddProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  addProduct() async {
+  addProduct(context) async {
     productsAdd = await addProducts(
-      productNameController.text,
-      int.parse(priceController.text),
-      int.parse(sellingItemController.text),
-      desController.text,
-      img!,
-    );
+        productNameController.text,
+        int.parse(priceController.text),
+        int.parse(sellingItemController.text),
+        desController.text,
+        img!,
+        context);
     notifyListeners();
   }
 
@@ -63,7 +61,7 @@ class ProductAddProvider extends ChangeNotifier {
   openDialog(context) {
     showDialog(
       context: context,
-      builder: (context) {
+      builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Choose picture from Camera or Gallery"),
           actions: [
