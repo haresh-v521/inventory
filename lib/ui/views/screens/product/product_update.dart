@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:login_figma/core/provider/product_provider.dart';
+import 'package:login_figma/ui/views/screens/product/listing.dart';
 import 'package:provider/provider.dart';
 import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
 
 class ProductUpdate extends StatefulWidget {
   final dynamic res;
+
   const ProductUpdate({Key? key, this.res}) : super(key: key);
 
   @override
@@ -96,7 +98,11 @@ class _ProductUpdateState extends State<ProductUpdate> {
               CustomButton(
                 onTap: () async {
                   modal.updateProduct(widget.res[3]);
-                  Navigator.of(context).pushNamed('listing');
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const ProductListing(),
+                    ),
+                  );
                 },
                 text: "UPDATE",
                 color: Colors.grey.shade800,

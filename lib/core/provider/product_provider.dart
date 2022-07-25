@@ -91,9 +91,9 @@ class ProductAddProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  listResponse(int page, context) async {
+  listResponse(int page) async {
     isLoading = true;
-    list = await getProduct(page, context);
+    list = await getProduct(page);
     items.addAll(list!.data.data);
     isLoading = false;
     notifyListeners();

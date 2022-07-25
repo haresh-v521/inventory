@@ -16,22 +16,28 @@ class MainSplash extends StatefulWidget {
 class _MainSplashState extends State<MainSplash> {
   @override
   void initState() {
-    Timer(const Duration(seconds: 5), () async {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      bool? status = prefs.getBool('status');
-      if (!mounted) return;
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) =>
-              (status == null) ? const HomePage() : const ProductListing(),
-        ),
-      );
-    });
+    Timer(
+      const Duration(seconds: 5),
+      () async {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        bool? status = prefs.getBool('status');
+        if (!mounted) return;
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) =>
+                (status == null) ? const HomePage() : const ProductListing(),
+          ),
+        );
+      },
+    );
     super.initState();
   }
 
   TextStyle colorizeTextStyle = const TextStyle(
-      fontSize: 50.0, color: Colors.blue, fontWeight: FontWeight.bold);
+    fontSize: 50.0,
+    color: Colors.blue,
+    fontWeight: FontWeight.bold,
+  );
 
   @override
   Widget build(BuildContext context) {

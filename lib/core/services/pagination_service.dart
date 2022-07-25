@@ -7,7 +7,9 @@ import '../modal/list_product_modal.dart';
 
 var dio = Dio();
 
-Future getProduct(int page, context) async {
+Future getProduct(
+  int page,
+) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   String? token = prefs.getString('token');
   try {
@@ -20,7 +22,7 @@ Future getProduct(int page, context) async {
         },
       ),
     )
-        .catchError((e) {
+        .catchError((e, context) {
       showDialog(
           context: context,
           builder: (BuildContext context) {

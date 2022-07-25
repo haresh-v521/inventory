@@ -24,9 +24,6 @@ class _SPlashState extends State<SPlash> {
     super.initState();
   }
 
-  TextStyle colorizeTextStyle =
-      const TextStyle(fontSize: 50.0, color: Colors.green);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +44,10 @@ class _SPlashState extends State<SPlash> {
               animatedTexts: [
                 WavyAnimatedText(
                   'Login Success',
-                  textStyle: colorizeTextStyle,
+                  textStyle: const TextStyle(
+                    fontSize: 50.0,
+                    color: Colors.green,
+                  ),
                 ),
               ],
               isRepeatingAnimation: true,

@@ -37,12 +37,12 @@ class _ProductListingState extends State<ProductListing> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      modal.listResponse(page, context);
+      modal.listResponse(page);
       scrollController.addListener(() {
         if (scrollController.position.pixels ==
             scrollController.position.maxScrollExtent) {
           if (page <= modal.list!.data.lastPage) {
-            modal.listResponse(page += 1, context);
+            modal.listResponse(page += 1);
           } else {
             return;
           }
@@ -260,8 +260,9 @@ class _ProductListingState extends State<ProductListing> {
                                                     },
                                                     text: 'CANCEL',
                                                     border: Border.all(
-                                                        color: Colors
-                                                            .grey.shade800),
+                                                      color:
+                                                          Colors.grey.shade800,
+                                                    ),
                                                     fontColor:
                                                         Colors.grey.shade800,
                                                     color: Colors.white,

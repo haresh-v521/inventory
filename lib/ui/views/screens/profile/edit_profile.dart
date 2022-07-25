@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_figma/core/provider/user_provider.dart';
+import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
 import 'package:login_figma/ui/widget/textfield.dart';
 import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:provider/provider.dart';
@@ -173,7 +174,11 @@ class _EditProfileState extends State<EditProfile> {
                   onTap: () {
                     modal.updateProfile();
                     modal.userResponse();
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => const ProfilePage(),
+                      ),
+                    );
                   },
                 ),
               ],
