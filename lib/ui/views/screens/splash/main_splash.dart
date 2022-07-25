@@ -3,6 +3,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:login_figma/ui/views/homepage.dart';
 import 'package:login_figma/ui/views/screens/product/listing.dart';
+import 'package:login_figma/utils/constant/app_assets.dart';
+import 'package:login_figma/utils/constant/app_string.dart';
 import 'package:rive/rive.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,21 +25,29 @@ class _MainSplashState extends State<MainSplash> {
         bool? status = prefs.getBool('status');
         if (!mounted) return;
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(
-            builder: (context) =>
-                (status == null) ? const HomePage() : const ProductListing(),
+          PageRouteBuilder(
+            transitionDuration: const Duration(seconds: 2),
+            pageBuilder: (context, animation, animation2) {
+              return (status == null)
+                  ? const HomePage()
+                  : const ProductListing();
+            },
+            transitionsBuilder: (context, animation, anotherAnimation, child) {
+              animation = CurvedAnimation(
+                curve: Curves.easeInOut,
+                parent: animation,
+              );
+              return ScaleTransition(
+                scale: animation,
+                child: child,
+              );
+            },
           ),
         );
       },
     );
     super.initState();
   }
-
-  TextStyle colorizeTextStyle = const TextStyle(
-    fontSize: 50.0,
-    color: Colors.blue,
-    fontWeight: FontWeight.bold,
-  );
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +64,19 @@ class _MainSplashState extends State<MainSplash> {
               color: Colors.white,
               alignment: Alignment.center,
               child: const RiveAnimation.asset(
-                "assets/rive_animations/basketball.riv",
+                Assets.ballImg,
                 fit: BoxFit.contain,
               ),
             ),
             AnimatedTextKit(
               animatedTexts: [
                 WavyAnimatedText(
-                  'WELCOME',
-                  textStyle: colorizeTextStyle,
+                  AppString.wel,
+                  textStyle: const TextStyle(
+                    fontSize: 50.0,
+                    color: Colors.blue,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ],
               isRepeatingAnimation: true,

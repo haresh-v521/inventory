@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:login_figma/ui/views/screens/product/listing.dart';
+import 'package:login_figma/utils/constant/app_assets.dart';
 import 'package:rive/rive.dart';
 
 class SPlash extends StatefulWidget {
@@ -37,7 +38,7 @@ class _SPlashState extends State<SPlash> {
               width: 200,
               alignment: Alignment.center,
               child: const RiveAnimation.asset(
-                "assets/rive_animations/checked.riv",
+                Assets.checkImg,
               ),
             ),
             AnimatedTextKit(

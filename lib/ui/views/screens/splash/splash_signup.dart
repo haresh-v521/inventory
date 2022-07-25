@@ -3,6 +3,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:login_figma/ui/views/screens/product/listing.dart';
 import 'package:rive/rive.dart';
+import '../../../../utils/constant/app_assets.dart';
 
 class SplashSignUp extends StatefulWidget {
   const SplashSignUp({Key? key}) : super(key: key);
@@ -40,7 +41,7 @@ class _SplashSignUpState extends State<SplashSignUp> {
               width: 200,
               alignment: Alignment.center,
               child: const RiveAnimation.asset(
-                "assets/rive_animations/checked.riv",
+                Assets.checkImg,
               ),
             ),
             AnimatedTextKit(

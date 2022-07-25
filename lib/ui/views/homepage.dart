@@ -70,8 +70,24 @@ class _HomePageState extends State<HomePage> {
               fontColor: Colors.black,
               onTap: () {
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
+                  PageRouteBuilder(
+                    transitionsBuilder:
+                        (context, animation, anotherAnimation, child) {
+                      animation = CurvedAnimation(
+                        curve: Curves.easeInOut,
+                        parent: animation,
+                      );
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(seconds: 2),
+                    pageBuilder: (BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation) {
+                      return const LoginPage();
+                    },
                   ),
                 );
               },
@@ -82,13 +98,29 @@ class _HomePageState extends State<HomePage> {
               fontColor: Colors.black,
               onTap: () {
                 Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (context) => const SignUp(),
+                  PageRouteBuilder(
+                    transitionsBuilder:
+                        (context, animation, anotherAnimation, child) {
+                      animation = CurvedAnimation(
+                        curve: Curves.easeInOut,
+                        parent: animation,
+                      );
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(seconds: 2),
+                    pageBuilder: (BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation) {
+                      return const SignUp();
+                    },
                   ),
                 );
               },
             ),
-            const Spacer()
+            const Spacer(),
           ],
         ),
       ),

@@ -10,7 +10,22 @@ import '../../../../utils/constant/app_string.dart';
 import '../../../widget/custom_text.dart';
 
 class ProductDetail extends StatefulWidget {
-  const ProductDetail({Key? key}) : super(key: key);
+  final String? img;
+  final String? name;
+  final int? mrp;
+  final int? selling;
+  final String? description;
+  final int? id;
+
+  const ProductDetail(
+      {Key? key,
+      this.img,
+      this.name,
+      this.mrp,
+      this.selling,
+      this.description,
+      this.id})
+      : super(key: key);
 
   @override
   State<ProductDetail> createState() => _ProductDetailState();
@@ -19,7 +34,6 @@ class ProductDetail extends StatefulWidget {
 class _ProductDetailState extends State<ProductDetail> {
   @override
   Widget build(BuildContext context) {
-    dynamic res = ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       backgroundColor: Colors.grey.shade300,
       extendBodyBehindAppBar: true,
@@ -64,7 +78,7 @@ class _ProductDetailState extends State<ProductDetail> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(15),
                       child: Image.network(
-                        "${res[0]}",
+                        "${widget.img}",
                         height: 250,
                         width: 250,
                         fit: BoxFit.cover,
@@ -74,17 +88,17 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 CustomText(
                   color: Colors.grey.shade800,
-                  text: res[2].toString().toUpperCase(),
+                  text: widget.name.toString().toUpperCase(),
                   size: 18,
                 ),
                 CustomText(
                   color: Colors.grey.shade500,
-                  text: "Price : ${res[1]} \$",
+                  text: "Price : ${widget.mrp} \$",
                   size: 16,
                 ),
                 CustomText(
                   color: Colors.grey.shade500,
-                  text: "Selling item : ${res[5]} Item",
+                  text: "Selling item : ${widget.selling} Item",
                   size: 16,
                 ),
                 Row(
@@ -115,7 +129,7 @@ class _ProductDetailState extends State<ProductDetail> {
                 ),
                 CustomText(
                   color: Colors.grey.shade500,
-                  text: res[4].toString().toUpperCase(),
+                  text: widget.description.toString().toUpperCase(),
                   size: 16,
                 ),
                 CustomText(
@@ -161,10 +175,28 @@ class _ProductDetailState extends State<ProductDetail> {
                     fontColor: Colors.white,
                     onTap: () {
                       Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => ProductUpdate(
-                            res: res,
-                          ),
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(seconds: 2),
+                          pageBuilder: (context, animation, animation2) {
+                            return ProductUpdate(
+                              id: widget.id,
+                              description: widget.description,
+                              mrp: widget.mrp,
+                              name: widget.name,
+                              selling: widget.selling,
+                            );
+                          },
+                          transitionsBuilder:
+                              (context, animation, anotherAnimation, child) {
+                            animation = CurvedAnimation(
+                              curve: Curves.easeInOut,
+                              parent: animation,
+                            );
+                            return RotationTransition(
+                              turns: animation,
+                              child: child,
+                            );
+                          },
                         ),
                       );
                     },

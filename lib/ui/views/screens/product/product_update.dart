@@ -6,9 +6,15 @@ import '../../../widget/login_button.dart';
 import '../../../widget/textfield.dart';
 
 class ProductUpdate extends StatefulWidget {
-  final dynamic res;
+  final String? name;
+  final int? mrp;
+  final int? selling;
+  final String? description;
+  final int? id;
 
-  const ProductUpdate({Key? key, this.res}) : super(key: key);
+  const ProductUpdate(
+      {Key? key, this.name, this.mrp, this.selling, this.description, this.id})
+      : super(key: key);
 
   @override
   State<ProductUpdate> createState() => _ProductUpdateState();
@@ -21,10 +27,10 @@ class _ProductUpdateState extends State<ProductUpdate> {
   void didChangeDependencies() {
     modal = Provider.of<ProductAddProvider>(context);
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      modal.pNameController.text = widget.res[2];
-      modal.mrpController.text = widget.res[1].toString();
-      modal.sellingController.text = widget.res[5].toString();
-      modal.descController.text = widget.res[4].toString();
+      modal.pNameController.text = widget.name!;
+      modal.mrpController.text = widget.mrp.toString();
+      modal.sellingController.text = widget.selling.toString();
+      modal.descController.text = widget.description.toString();
     });
     super.didChangeDependencies();
   }
@@ -97,7 +103,7 @@ class _ProductUpdateState extends State<ProductUpdate> {
               ),
               CustomButton(
                 onTap: () async {
-                  modal.updateProduct(widget.res[3]);
+                  modal.updateProduct(widget.id);
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                       builder: (context) => const ProductListing(),

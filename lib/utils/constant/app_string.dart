@@ -30,6 +30,4 @@ class AppString {
   static const String record =
       "This Item is permanently delete from your record";
   static const String delete = "Are You sure Want to delete ?";
-  static const String proDetail =
-      "Power Output(RMS): 10 W\nBattery life: 12 hrs\nBluetooth Version: 5\nWireless range: 10 m\nWireless music streaming via Bluetooth\nIPX7: Splash and Sweat Shield\nMultiple Connectivity: BT, TF Card and AUX";
 }

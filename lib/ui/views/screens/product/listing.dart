@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:login_figma/core/provider/user_provider.dart';
 import 'package:login_figma/ui/views/screens/login/login_screen.dart';
+import 'package:login_figma/ui/views/screens/product/product_detail.dart';
 import 'package:login_figma/ui/views/screens/profile/profile_page.dart';
 import 'package:login_figma/ui/widget/login_button.dart';
 import 'package:login_figma/utils/constant/app_assets.dart';
@@ -79,8 +80,24 @@ class _ProductListingState extends State<ProductListing> {
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AddProducts(),
+                  PageRouteBuilder(
+                    transitionsBuilder:
+                        (context, animation, anotherAnimation, child) {
+                      animation = CurvedAnimation(
+                        curve: Curves.easeInOut,
+                        parent: animation,
+                      );
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                    transitionDuration: const Duration(seconds: 2),
+                    pageBuilder: (BuildContext context,
+                        Animation<double> animation,
+                        Animation<double> secondaryAnimation) {
+                      return const AddProducts();
+                    },
                   ),
                 );
               },
@@ -97,11 +114,35 @@ class _ProductListingState extends State<ProductListing> {
           child: Column(
             children: [
               DrawerHeader(
-                child: CircleAvatar(
-                  radius: 60,
-                  backgroundImage: (userModal.profile?.user.gender == "FeMale")
-                      ? const AssetImage(Assets.female)
-                      : const AssetImage(Assets.male),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      PageRouteBuilder(
+                        transitionDuration: const Duration(seconds: 2),
+                        pageBuilder: (context, animation, animation2) {
+                          return const ProfilePage();
+                        },
+                        transitionsBuilder:
+                            (context, animation, anotherAnimation, child) {
+                          animation = CurvedAnimation(
+                            curve: Curves.easeInOut,
+                            parent: animation,
+                          );
+                          return ScaleTransition(
+                            scale: animation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  },
+                  child: CircleAvatar(
+                    radius: 60,
+                    backgroundImage:
+                        (userModal.profile?.user.gender == "FeMale")
+                            ? const AssetImage(Assets.female)
+                            : const AssetImage(Assets.male),
+                  ),
                 ),
               ),
               CustomListTile(
@@ -110,8 +151,24 @@ class _ProductListingState extends State<ProductListing> {
                 color: Colors.transparent,
                 callback: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
+                    PageRouteBuilder(
+                      transitionsBuilder:
+                          (context, animation, anotherAnimation, child) {
+                        animation = CurvedAnimation(
+                          curve: Curves.easeInOut,
+                          parent: animation,
+                        );
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(seconds: 2),
+                      pageBuilder: (BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation) {
+                        return const LoginPage();
+                      },
                     ),
                   );
                 },
@@ -122,8 +179,24 @@ class _ProductListingState extends State<ProductListing> {
                 color: Colors.transparent,
                 callback: () {
                   Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ProfilePage(),
+                    PageRouteBuilder(
+                      transitionsBuilder:
+                          (context, animation, anotherAnimation, child) {
+                        animation = CurvedAnimation(
+                          curve: Curves.easeInOut,
+                          parent: animation,
+                        );
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(seconds: 2),
+                      pageBuilder: (BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation) {
+                        return const ProfilePage();
+                      },
                     ),
                   );
                 },
@@ -134,8 +207,31 @@ class _ProductListingState extends State<ProductListing> {
                 color: Colors.transparent,
                 callback: () {
                   Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(
-                      builder: (context) => const LoginPage(),
+                    PageRouteBuilder(
+                      transitionsBuilder:
+                          (context, animation, anotherAnimation, child) {
+                        animation = CurvedAnimation(
+                          curve: Curves.easeInOut,
+                          parent: animation,
+                        );
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                      transitionDuration: const Duration(seconds: 2),
+                      pageBuilder: (BuildContext context,
+                          Animation<double> animation,
+                          Animation<double> secondaryAnimation) {
+                        return const LoginPage();
+                      },
+                    ),
+                  );
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: Colors.green,
+                      content: Text("Log Out Successful"),
                     ),
                   );
                 },
@@ -198,79 +294,7 @@ class _ProductListingState extends State<ProductListing> {
                                   return Transform.translate(
                                     offset: val,
                                     child: ProductList(
-                                      onTap: () {
-                                        Navigator.of(context).pushNamed(
-                                          'detail',
-                                          arguments: [
-                                            (modal.items[index].img == null)
-                                                ? Assets.noImage
-                                                : modal.items[index].img,
-                                            modal.items[index].mrp,
-                                            modal.items[index].name,
-                                            modal.items[index].id,
-                                            modal.items[index].description,
-                                            modal.items[index].selling,
-                                          ],
-                                        );
-                                      },
                                       image: Assets.playImg,
-                                      onPressed: () {
-                                        showDialog(
-                                            context: context,
-                                            builder: (context) {
-                                              return AlertDialog(
-                                                title: const Text(
-                                                  AppString.delete,
-                                                ),
-                                                content: const Text(
-                                                  AppString.record,
-                                                ),
-                                                actions: [
-                                                  CustomButton(
-                                                    onTap: () {
-                                                      modal.delete(modal
-                                                          .items[index].id);
-                                                      modal.items
-                                                          .removeAt(index);
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                      ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                        const SnackBar(
-                                                          backgroundColor:
-                                                              Colors.red,
-                                                          behavior:
-                                                              SnackBarBehavior
-                                                                  .floating,
-                                                          content: Text(
-                                                            "Product Deleted Successfully",
-                                                          ),
-                                                        ),
-                                                      );
-                                                    },
-                                                    text: 'DELETE',
-                                                    fontColor: Colors.white,
-                                                    color: Colors.grey.shade800,
-                                                  ),
-                                                  CustomButton(
-                                                    onTap: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                    text: 'CANCEL',
-                                                    border: Border.all(
-                                                      color:
-                                                          Colors.grey.shade800,
-                                                    ),
-                                                    fontColor:
-                                                        Colors.grey.shade800,
-                                                    color: Colors.white,
-                                                  ),
-                                                ],
-                                              );
-                                            });
-                                      },
                                       bluImage: (modal.items[index].img == null)
                                           ? Assets.noImage
                                           : "${modal.items[index].img}",
@@ -278,6 +302,97 @@ class _ProductListingState extends State<ProductListing> {
                                           "Price : ${modal.items[index].mrp}",
                                       bluText:
                                           modal.items[index].name.toUpperCase(),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return AlertDialog(
+                                              title: const Text(
+                                                AppString.delete,
+                                              ),
+                                              content: const Text(
+                                                AppString.record,
+                                              ),
+                                              actions: [
+                                                CustomButton(
+                                                  onTap: () {
+                                                    modal.delete(
+                                                        modal.items[index].id);
+                                                    modal.items.removeAt(index);
+                                                    Navigator.of(context).pop();
+                                                    ScaffoldMessenger.of(
+                                                            context)
+                                                        .showSnackBar(
+                                                      const SnackBar(
+                                                        backgroundColor:
+                                                            Colors.red,
+                                                        behavior:
+                                                            SnackBarBehavior
+                                                                .floating,
+                                                        content: Text(
+                                                          "Product Deleted Successfully",
+                                                        ),
+                                                      ),
+                                                    );
+                                                  },
+                                                  text: 'DELETE',
+                                                  fontColor: Colors.white,
+                                                  color: Colors.grey.shade800,
+                                                ),
+                                                CustomButton(
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  text: 'CANCEL',
+                                                  border: Border.all(
+                                                    color: Colors.grey.shade800,
+                                                  ),
+                                                  fontColor:
+                                                      Colors.grey.shade800,
+                                                  color: Colors.white,
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      onTap: () {
+                                        Navigator.of(context).push(
+                                          PageRouteBuilder(
+                                              transitionDuration:
+                                                  const Duration(seconds: 1),
+                                              pageBuilder: (context, animation,
+                                                  animation2) {
+                                                return ProductDetail(
+                                                  img: (modal.items[index]
+                                                              .img ==
+                                                          null)
+                                                      ? Assets.noImage
+                                                      : modal.items[index].img,
+                                                  name: modal.items[index].name,
+                                                  mrp: modal.items[index].mrp,
+                                                  description: modal
+                                                      .items[index].description,
+                                                  id: modal.items[index].id,
+                                                  selling: modal
+                                                      .items[index].selling,
+                                                );
+                                              },
+                                              transitionsBuilder: (context,
+                                                  animation,
+                                                  anotherAnimation,
+                                                  child) {
+                                                animation = CurvedAnimation(
+                                                  curve: Curves.easeInOut,
+                                                  parent: animation,
+                                                );
+                                                return ScaleTransition(
+                                                  scale: animation,
+                                                  child: child,
+                                                );
+                                              }),
+                                        );
+                                      },
                                     ),
                                   );
                                 },

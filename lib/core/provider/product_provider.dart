@@ -83,10 +83,10 @@ class ProductAddProvider extends ChangeNotifier {
     );
   }
 
-  updateProduct(int id) async {
+  updateProduct(int? id) async {
     isLoading = true;
     product = await productUpdate(pNameController.text, mrpController.text,
-        sellingController.text, descController.text, id);
+        sellingController.text, descController.text, id!);
     isLoading = false;
     notifyListeners();
   }

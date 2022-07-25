@@ -5,4 +5,6 @@ class Assets {
   static const String female = "assets/images/female.jpeg";
   static const String noImage =
       "https://propertywiselaunceston.com.au/wp-content/themes/property-wise/images/no-image.png";
+  static const String ballImg = "assets/rive_animations/basketball.riv";
+  static const String checkImg = "assets/rive_animations/checked.riv";
 }
