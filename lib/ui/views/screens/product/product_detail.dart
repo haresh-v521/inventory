@@ -192,8 +192,8 @@ class _ProductDetailState extends State<ProductDetail> {
                               curve: Curves.easeInOut,
                               parent: animation,
                             );
-                            return RotationTransition(
-                              turns: animation,
+                            return FadeTransition(
+                              opacity: animation,
                               child: child,
                             );
                           },
